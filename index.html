@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Georgi Gaydarov — Network &amp; AI Engineering Projects</title>
-<meta name="description" content="Documentation hub for Georgi Gaydarov's open-source network automation and AI-for-networking projects — multivendor labs, air-gapped change validation, AI log analysis, and a 52k-command CLI reference.">
+<meta name="description" content="Documentation hub for Georgi Gaydarov's open-source network automation and AI-for-networking projects — multivendor labs, air-gapped change validation, AI log analysis, an agentic AI pentester, and a 70k-command CLI reference.">
 <style>
   :root{
     --bg0:#0b1020; --bg1:#131a2e; --card:rgba(255,255,255,.04); --cardb:rgba(255,255,255,.10);
@@ -104,7 +104,7 @@
     <h1>Georgi Gaydarov — <span class="grad">engineering docs hub</span></h1>
     <p class="lede">Senior network engineering leader building AI-native network operations tooling.
       Below are the live, single-page docs for my open-source projects — multivendor labs, air-gapped
-      change validation, AI log analysis, and a 52k-command CLI reference.</p>
+      change validation, AI log analysis, an agentic AI pentester, and a 70k-command CLI reference.</p>
     <div class="cta">
       <a class="btn primary" href="#projects">Browse projects ↓</a>
       <a class="btn ghost" href="https://github.com/gesh75" target="_blank" rel="noopener">↗ GitHub profile</a>
@@ -112,16 +112,16 @@
   </section>
 
   <section id="projects">
-    <div class="sec-h"><h2>Projects</h2><span>7 live documentation sites</span></div>
+    <div class="sec-h"><h2>Projects</h2><span>8 open-source projects</span></div>
     <div class="grid">
 
       <a class="card" style="--accent:#f43f5e" href="https://gesh75.github.io/argus/">
         <div class="top"><span class="ico">👁️</span></div>
         <h3>argus</h3>
-        <p>AI-driven, guardrailed offensive-security agent — an all-seeing recon &amp; enumeration engine that
-           observes, decides, authorizes, collects and re-plans inside a sandbox. AD enumeration, host auditing,
-           and network discovery with hard scope guardrails.</p>
-        <div class="tags"><span class="tag">AI agent</span><span class="tag">red-team</span><span class="tag">guardrails</span><span class="tag">active-directory</span></div>
+        <p>Agentic AI penetration tester — reasons, chains, and adapts across network, host, Active Directory
+           and web targets, read-only by default behind a fail-closed 7-layer guardrail. Proof-annotated attack
+           paths, HMAC-audited runs, and Claude / Ollama / offline backends.</p>
+        <div class="tags"><span class="tag">AI pentester</span><span class="tag">7-layer guardrail</span><span class="tag">HMAC audit</span><span class="tag">active-directory</span></div>
         <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/argus" style="color:inherit">repo ↗</a></span></span>
       </a>
 
@@ -137,18 +137,21 @@
       <a class="card" style="--accent:#5eead4" href="https://gesh75.github.io/multivendor-ai-network-lab/">
         <div class="top"><span class="ico">🛰️</span></div>
         <h3>multivendor-ai-network-lab</h3>
-        <p>26-device multivendor AI network lab — Pydantic-AI orchestrator, eval harness with LLM-as-judge,
-           immutable GAIT audit, hop-by-hop path trace, intent-drift detector, and CVE scanner.</p>
-        <div class="tags"><span class="tag">Pydantic-AI</span><span class="tag">26 devices</span><span class="tag">MCP · 64 tools</span><span class="tag">Juniper/Arista/FRR</span></div>
+        <p>26-device multivendor AI network lab that closes the loop — detected anomalies auto-remediate,
+           risk-gated (auto / approve / page-out) with RFC 6241 confirmed-commit rollback. Pydantic-AI
+           orchestrator, eval harness with LLM-as-judge, immutable GAIT audit, path trace, intent-drift
+           detector, and CVE scanner.</p>
+        <div class="tags"><span class="tag">Pydantic-AI</span><span class="tag">26 devices</span><span class="tag">MCP · 68 tools</span><span class="tag">closed-loop remediation</span><span class="tag">Juniper/Arista/Nokia SRL/FRR</span></div>
         <span class="open">Open docs →<span class="sub"><a href="https://gesh75.github.io/multivendor-ai-network-lab/portal.html" style="color:inherit">fabric portal ↗</a></span></span>
       </a>
 
       <a class="card" style="--accent:#34d399" href="https://gesh75.github.io/multivendor-cli-configurator/docs/">
         <div class="top"><span class="ico">⌨️</span></div>
         <h3>multivendor-cli-configurator</h3>
-        <p>52,000+ CLI commands across 17 network vendors &amp; tools — a searchable, comparable,
-           deep-linkable cheatsheet with per-command NETCONF / ncclient / Ansible drawers. Single HTML, zero deps.</p>
-        <div class="tags"><span class="tag">52k commands</span><span class="tag">17 vendors</span><span class="tag">zero-dep</span></div>
+        <p>70,000+ CLI commands across 17 network vendors &amp; tools — a searchable, deep-linkable cheatsheet
+           with concept-aligned N-vendor compare and per-command NETCONF / ncclient / Ansible drawers.
+           Single HTML, zero deps.</p>
+        <div class="tags"><span class="tag">70k commands</span><span class="tag">17 vendors</span><span class="tag">N-vendor compare</span><span class="tag">zero-dep</span></div>
         <span class="open">Open docs →<span class="sub"><a href="https://gesh75.github.io/multivendor-cli-configurator/" style="color:inherit">live tool ↗</a></span></span>
       </a>
 
@@ -157,8 +160,8 @@
         <h3>aegis</h3>
         <p>Air-gapped pre-deployment network change validation against a real containerlab digital twin —
            a self-hosted LLM proposes inside the wall; only a sealed PCI / SOC2 / NIST evidence badge ever leaves. Zero egress.</p>
-        <div class="tags"><span class="tag">air-gapped</span><span class="tag">digital twin</span><span class="tag">PCI/SOC2/NIST</span></div>
-        <span class="open">Open docs →</span>
+        <div class="tags"><span class="tag">air-gapped</span><span class="tag">digital twin</span><span class="tag">Batfish</span><span class="tag">PCI/SOC2/NIST</span></div>
+        <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/aegis" style="color:inherit">repo ↗</a></span></span>
       </a>
 
       <a class="card" style="--accent:#60a5fa" href="https://gesh75.github.io/netlog-ai/">
@@ -167,7 +170,7 @@
         <p>Local, sanitize-first AI network log analyzer (Junos / EOS / FRR) that turns raw syslog and CLI
            output into prioritized, copy-pastable root-cause playbooks. Runs on a local model or Anthropic Claude.</p>
         <div class="tags"><span class="tag">sanitize-first</span><span class="tag">LLM root-cause</span><span class="tag">139 tests</span></div>
-        <span class="open">Open docs →</span>
+        <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/netlog-ai" style="color:inherit">repo ↗</a></span></span>
       </a>
 
       <a class="card" style="--accent:#a78bfa" href="https://gesh75.github.io/claude-mastery-hub/">
@@ -177,6 +180,15 @@
            subagents, and hooks. Zero-dependency, deep-linkable reference.</p>
         <div class="tags"><span class="tag">Claude Code</span><span class="tag">MCP</span><span class="tag">skills</span><span class="tag">zero-dep</span></div>
         <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/claude-mastery-hub" style="color:inherit">repo ↗</a></span></span>
+      </a>
+
+      <a class="card" style="--accent:#f472b6" href="https://github.com/gesh75/claude-skill-lint">
+        <div class="top"><span class="ico">🧹</span></div>
+        <h3>claude-skill-lint</h3>
+        <p>Zero-dependency linter for Claude Code skills — checks frontmatter, description length,
+           progressive disclosure, dead references, and stale model IDs so a skills library stays lean and loadable.</p>
+        <div class="tags"><span class="tag">linter</span><span class="tag">Claude Code skills</span><span class="tag">CLI</span><span class="tag">zero-dep</span></div>
+        <span class="open">View repo →</span>
       </a>
 
     </div>
