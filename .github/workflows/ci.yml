@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Weekly, to catch a project's Pages site or repo going away even when
+  # nothing in this repo changed.
+  schedule:
+    - cron: "0 9 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-site:
+    name: Validate HTML + links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check index.html structure and link liveness
+        run: python3 scripts/check_site.py
