@@ -31,6 +31,29 @@ open-source network-automation / AI-for-NetOps projects. GitHub Pages serves `ma
   37 CONCEPT_SYNONYMS / 15 YANG patterns were unchanged.
 - Hub PR: gesh75/gesh75.github.io#1 (merged, squash `4c2bb82`).
 
+## CI guards added (so drift can't recur silently)
+
+Two CI gates now enforce what this session had to fix by hand:
+- **`gesh75/multivendor-cli-configurator`** — `.github/workflows/ci.yml` runs two jobs:
+  1. `scripts/check_consistency.py` (stdlib) recomputes command count / per-role split /
+     vendor count from `commands.json` and **fails CI** if `README.md` or `docs/index.html`
+     drift. Hard-checks are the raw numbers (substring match, wording-tolerant); rounded form
+     and ~MB size are advisory warnings. (PR #3, `be033b1`)
+  2. `tests/stress_test.js` — the Node perf + correctness suite, now a real gate.
+- **`gesh75.github.io`** (this repo) — `scripts/check_site.py` + `.github/workflows/ci.yml`
+  validate `index.html` tag structure (hard gate) and card-link liveness (hard-fail only on
+  404/410; transient errors warn; LinkedIn skipped). Runs on push, PR, **and weekly** cron so a
+  project's Pages/repo disappearing is caught with no repo change. (PR #4, `d0cf2b3`)
+- **Perf:** `lookupConcept` in the CLI configurator was re-lowercasing constant CONCEPT_SYNONYMS
+  needles on every call → T6 stress test 2894ms (>1800ms target) on the grown corpus. Fixed by
+  lowercasing needles once and caching on the function object (`lookupConcept._lc`); **633ms**,
+  behavior-identical (concept correctness 10/10). This is why the stress suite could be gated.
+  (PR #4 `cbe5de6`)
+- Verified (via GitHub API) that **aegis** and **multivendor-ai-network-lab** DO serve live Pages
+  from `/docs` (`docs/index.html`, plus `docs/portal.html` for the AI lab) — all 8 hub card links
+  resolve; nothing dead.
+- Known/deferred: none outstanding. (The T6 perf issue that was tracked is now fixed.)
+
 ## Maintenance playbook
 
 When any project's headline numbers or positioning change, sync **these places**:
