@@ -3,219 +3,391 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Georgi Gaydarov — Network &amp; AI Engineering Projects</title>
-<meta name="description" content="Documentation hub for Georgi Gaydarov's open-source network automation and AI-for-networking projects — multivendor labs, air-gapped change validation, AI log analysis, an agentic AI pentester, and a 70k-command CLI reference.">
+<title>GESH Lab — Network & AI Engineering</title>
+<meta name="description" content="Documentation hub for Georgi Gaydarov's open-source network automation and AI-for-NetOps projects — closed-loop labs, air-gapped change validation, an agentic pentester, and a 70k-command CLI reference.">
+<meta name="theme-color" content="#09090b">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg0:#0b1020; --bg1:#131a2e; --card:rgba(255,255,255,.04); --cardb:rgba(255,255,255,.10);
-    --ink:#e7ecf6; --muted:#9aa6c4; --dim:#6b7798;
-    --a1:#5eead4; --a2:#60a5fa; --a3:#a78bfa;
-    --maxw:1120px;
+  :root {
+    --bg: #09090b;
+    --fg: #f4f4f5;
+    --card: #111114;
+    --muted: #a1a1aa;
+    --subtle: #71717a;
+    --border: #27272a;
+    --primary: #e4e4e7;
+    --primary-fg: #09090b;
+    --shadow: 0 0 0 1px rgba(255,255,255,.08);
+    --shadow-h: 0 0 0 1px rgba(255,255,255,.14);
+    --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --display: "Newsreader", "Iowan Old Style", Georgia, serif;
+    --max: 72rem;
   }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0; background:radial-gradient(1200px 700px at 80% -10%,rgba(96,165,250,.14),transparent 60%),
-        radial-gradient(900px 600px at 0% 0%,rgba(167,139,250,.12),transparent 55%),
-        linear-gradient(180deg,var(--bg0),var(--bg1));
-        color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-        min-height:100vh; line-height:1.55; overflow-x:hidden}
-  a{color:inherit}
-  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
-  /* aurora */
-  .aurora{position:fixed; inset:0; z-index:0; pointer-events:none; filter:blur(60px); opacity:.5}
-  .aurora i{position:absolute; width:42vw; height:42vw; border-radius:50%; display:block}
-  .aurora i:nth-child(1){background:#0ea5e9; top:-12%; left:-8%; animation:float 16s ease-in-out infinite}
-  .aurora i:nth-child(2){background:#7c3aed; bottom:-18%; right:-6%; animation:float 20s ease-in-out infinite reverse}
-  .aurora i:nth-child(3){background:#10b981; top:35%; right:25%; width:26vw; height:26vw; opacity:.5; animation:float 24s ease-in-out infinite}
-  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(3%,4%) scale(1.08)}}
-  header,main,footer{position:relative; z-index:1}
-  /* nav */
-  nav{display:flex; align-items:center; justify-content:space-between; padding:20px 0}
-  .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.3px}
-  .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a3));box-shadow:0 0 14px var(--a2)}
-  .navlinks a{color:var(--muted); text-decoration:none; font-size:14px; font-weight:600; margin-left:18px}
-  .navlinks a:hover{color:var(--ink)}
-  /* hero */
-  .hero{padding:54px 0 34px; max-width:820px}
-  .eyebrow{color:var(--a1); font-weight:800; letter-spacing:.16em; font-size:12.5px; text-transform:uppercase}
-  h1{font-size:clamp(34px,6vw,62px); line-height:1.04; letter-spacing:-1.5px; font-weight:900; margin:14px 0 16px}
-  h1 .grad{background:linear-gradient(100deg,var(--a1),var(--a2) 45%,var(--a3)); -webkit-background-clip:text; background-clip:text; color:transparent}
-  .lede{color:var(--muted); font-size:clamp(16px,2.3vw,19px); max-width:680px}
-  .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px}
-  .btn{display:inline-flex; align-items:center; gap:8px; padding:11px 18px; border-radius:12px; font-weight:700; font-size:14.5px; text-decoration:none; border:1px solid var(--cardb)}
-  .btn.primary{background:linear-gradient(100deg,var(--a1),var(--a2),var(--a3)); color:#08101f; border:none}
-  .btn.ghost{background:rgba(255,255,255,.03); color:var(--ink)}
-  .btn:hover{transform:translateY(-1px)}
-  .btn:focus-visible{outline:2px solid var(--a2); outline-offset:3px}
-  /* section */
-  .sec-h{display:flex; align-items:baseline; gap:14px; margin:34px 0 6px}
-  .sec-h h2{font-size:clamp(22px,3.4vw,30px); font-weight:800; letter-spacing:-.4px; margin:0}
-  .sec-h span{color:var(--dim); font-size:13.5px; font-weight:600}
-  /* grid */
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:18px; padding:18px 0 8px}
-  .card{position:relative; border:1px solid var(--cardb); border-radius:18px; background:var(--card);
-        backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:22px; text-decoration:none; color:inherit;
-        display:flex; flex-direction:column; gap:12px; overflow:hidden; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-        opacity:0; transform:translateY(16px)}
-  .card.in{opacity:1; transform:none}
-  .card::before{content:""; position:absolute; inset:0 0 auto 0; height:3px; background:linear-gradient(90deg,var(--accent,#60a5fa),transparent)}
-  .card:hover{transform:translateY(-4px); border-color:var(--accent,#60a5fa); box-shadow:0 24px 60px -28px var(--accent,#60a5fa)}
-  .card:focus-visible{outline:2px solid var(--accent,#60a5fa); outline-offset:3px}
-  .card .top{display:flex; align-items:center; justify-content:space-between; gap:10px}
-  .ico{width:42px; height:42px; border-radius:12px; display:grid; place-items:center; font-size:21px;
-       background:color-mix(in srgb,var(--accent,#60a5fa) 18%,transparent); border:1px solid color-mix(in srgb,var(--accent,#60a5fa) 40%,transparent)}
-  .badge{font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--dim);
-         border:1px solid var(--cardb); border-radius:999px; padding:3px 9px}
-  .card h3{margin:2px 0 0; font-size:18.5px; font-weight:800; letter-spacing:-.3px; color:var(--accent,#cfe0ff)}
-  .card p{margin:0; color:var(--muted); font-size:14.5px; flex:1}
-  .tags{display:flex; flex-wrap:wrap; gap:6px}
-  .tag{font-size:11.5px; font-weight:600; color:var(--muted); background:rgba(255,255,255,.05); border:1px solid var(--cardb); border-radius:7px; padding:3px 8px}
-  .open{display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:14px; color:var(--accent,#60a5fa); margin-top:2px}
-  .open .sub{color:var(--dim); font-weight:600; font-size:12.5px; margin-left:8px}
-  /* footer */
-  footer{border-top:1px solid var(--cardb); margin-top:48px; padding:28px 0 50px; color:var(--dim); font-size:13.5px}
-  footer a{color:var(--muted); text-decoration:none; font-weight:600}
-  footer a:hover{color:var(--ink)}
-  .foot-row{display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between}
-  @media (max-width:560px){ .grid{grid-template-columns:1fr} }
-  @media (prefers-reduced-motion: reduce){
-    *,*::before,*::after{animation:none!important; transition:none!important; scroll-behavior:auto!important}
-    .card{opacity:1; transform:none}
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    min-height: 100dvh;
+  }
+  a { color: inherit; }
+  h1, h2, h3 { text-wrap: balance; font-weight: 500; letter-spacing: -0.03em; }
+  p { text-wrap: pretty; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+  .skip {
+    position: absolute; left: -999px; top: 0;
+  }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 50; background: var(--primary); color: var(--primary-fg); padding: .5rem .75rem; border-radius: .5rem; }
+  header {
+    position: sticky; top: 0; z-index: 40;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 4rem;
+  }
+  .brand { display: flex; align-items: center; gap: .65rem; text-decoration: none; font-weight: 500; font-size: .9rem; }
+  .brand svg { width: 1.75rem; height: 1.75rem; }
+  .navlinks { display: flex; align-items: center; gap: .15rem; }
+  .navlinks a {
+    color: var(--muted); text-decoration: none; font-size: .875rem;
+    padding: .5rem .75rem; border-radius: .5rem;
+  }
+  .navlinks a:hover { color: var(--fg); }
+  .hero { display: grid; gap: 2.5rem; padding: 3.5rem 0 4rem; }
+  @media (min-width: 960px) {
+    .hero { grid-template-columns: 1.15fr .85fr; align-items: stretch; }
+  }
+  .eyebrow {
+    color: var(--muted); font-size: .75rem; font-weight: 500;
+    letter-spacing: .18em; text-transform: uppercase;
+  }
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.08; margin: 1.1rem 0 0;
+  }
+  .lede { color: var(--muted); font-size: clamp(1rem, 2vw, 1.125rem); max-width: 38rem; margin-top: 1.4rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    height: 2.75rem; padding: 0 1rem; border-radius: .5rem;
+    font-size: .875rem; font-weight: 500; text-decoration: none; border: 0;
+  }
+  .btn.primary { background: var(--primary); color: var(--primary-fg); }
+  .btn.ghost { background: transparent; color: var(--fg); box-shadow: var(--shadow); }
+  .btn:hover { opacity: .92; }
+  .fabric {
+    position: relative; min-height: 16rem; border-radius: 1rem;
+    background: var(--card); box-shadow: var(--shadow); overflow: hidden;
+  }
+  .fabric svg { width: 100%; height: 100%; min-height: 16rem; padding: 1rem; }
+  .fabric .cap {
+    position: absolute; inset: auto 1rem 1rem 1rem;
+    display: flex; justify-content: space-between; pointer-events: none;
+  }
+  .fabric .cap span {
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    color: var(--muted); font-size: 11px; letter-spacing: .08em;
+    text-transform: uppercase; padding: .2rem .45rem; border-radius: .25rem;
+  }
+  .stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  @media (min-width: 720px) { .stats { grid-template-columns: repeat(5, 1fr); } }
+  .stats div { background: var(--bg); padding: 1.6rem 1.25rem; }
+  .stats b { display: block; font-size: 1.75rem; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1; }
+  .stats span { display: block; margin-top: .4rem; color: var(--muted); font-size: .75rem; }
+  section.block { padding: 4rem 0; }
+  .sec-h { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; justify-content: space-between; }
+  h2 { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2rem); margin: 0; }
+  .sub { color: var(--muted); font-size: .875rem; max-width: 32rem; margin: .5rem 0 0; }
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.25rem 0 1.5rem; }
+  .filters button, .search {
+    height: 2.75rem; border-radius: 999px; border: 0; font-family: inherit;
+    font-size: .875rem; padding: 0 1rem; background: #18181c; color: var(--muted);
+  }
+  .filters button[aria-pressed="true"] { background: var(--primary); color: var(--primary-fg); }
+  .search { border-radius: .5rem; min-width: 12rem; color: var(--fg); box-shadow: var(--shadow); background: var(--card); }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .grid.three { grid-template-columns: 1fr 1fr 1fr; } }
+  .card {
+    display: flex; flex-direction: column; gap: .65rem;
+    background: var(--card); color: inherit; text-decoration: none;
+    border-radius: 1rem; padding: 1.25rem; box-shadow: var(--shadow);
+    min-height: 12rem; transition: box-shadow .2s ease, transform .2s ease;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-h); }
+  .card h3 { font-family: var(--display); font-size: 1.25rem; margin: 0; }
+  .card p { margin: 0; color: var(--muted); font-size: .875rem; flex: 1; }
+  .chip {
+    display: inline-block; font-size: .7rem; color: var(--muted);
+    box-shadow: var(--shadow); border-radius: 999px; padding: .15rem .55rem;
+    letter-spacing: .04em;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .tag {
+    font-size: .7rem; color: var(--muted); background: #18181c;
+    border-radius: .25rem; padding: .15rem .45rem;
+  }
+  .principles { display: grid; gap: 2rem; }
+  @media (min-width: 640px) { .principles { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .principles { grid-template-columns: 1fr 1fr 1fr; } }
+  .principles article .n { color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
+  .principles h3 { font-family: var(--display); font-size: 1.2rem; margin: .6rem 0 .4rem; }
+  .principles p { margin: 0; color: var(--muted); font-size: .875rem; }
+  .stack { display: grid; gap: 2rem; }
+  @media (min-width: 640px) { .stack { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .stack { grid-template-columns: repeat(4, 1fr); } }
+  .stack h3 { margin: 0 0 .75rem; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .stack ul { margin: 0; padding: 0; list-style: none; }
+  .stack li { font-size: .875rem; padding: .15rem 0; }
+  .about { display: grid; gap: 2.5rem; }
+  @media (min-width: 960px) { .about { grid-template-columns: 1.2fr .8fr; } }
+  .about p { color: var(--muted); }
+  .aside {
+    background: var(--card); border-radius: 1rem; padding: 1.5rem; box-shadow: var(--shadow); height: fit-content;
+  }
+  .aside h3 { margin: 0 0 1rem; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .aside a { display: block; font-size: .875rem; text-decoration: none; padding: .35rem 0; }
+  .aside a:hover { text-decoration: underline; }
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 0 3.5rem; color: var(--subtle); font-size: .85rem; }
+  .foot { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: end; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 1.1rem; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--fg); }
+  .empty { color: var(--muted); font-size: .875rem; }
+  .card[hidden], .empty[hidden] { display: none; }
+  @media (max-width: 720px) {
+    .navlinks a.desk { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card { transition: none; }
   }
 </style>
 </head>
 <body>
-<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-
-<header class="wrap">
-  <nav>
-    <div class="brand"><span class="dot"></span> gesh75</div>
-    <div class="navlinks">
-      <a href="#projects">Projects</a>
-      <a href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/gesh75" target="_blank" rel="noopener">LinkedIn ↗</a>
-    </div>
-  </nav>
+<a class="skip" href="#work">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#e4e4e7"/><circle cx="8" cy="22" r="2.2" fill="#09090b"/><circle cx="16" cy="10" r="2.2" fill="#09090b"/><circle cx="24" cy="22" r="2.2" fill="#09090b"/><path d="M8 22 L16 10 L24 22" stroke="#09090b" stroke-width="1.6" fill="none"/></svg>
+      GESH Lab
+    </a>
+    <nav class="navlinks">
+      <a href="#work">Work</a>
+      <a href="#principles">Principles</a>
+      <a class="desk" href="#about">About</a>
+      <a href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
 </header>
 
-<main class="wrap">
-  <section class="hero">
-    <div class="eyebrow">Network Automation · AI for NetOps</div>
-    <h1>Georgi Gaydarov — <span class="grad">engineering docs hub</span></h1>
-    <p class="lede">Senior network engineering leader building AI-native network operations tooling.
-      Below are the live, single-page docs for my open-source projects — multivendor labs, air-gapped
-      change validation, AI log analysis, an agentic AI pentester, and a 70k-command CLI reference.</p>
-    <div class="cta">
-      <a class="btn primary" href="#projects">Browse projects ↓</a>
-      <a class="btn ghost" href="https://github.com/gesh75" target="_blank" rel="noopener">↗ GitHub profile</a>
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">Network automation · AI for NetOps</p>
+      <h1>The loop, closed.</h1>
+      <p class="lede">Georgi Gaydarov builds AI-native network operations tooling — labs that remediate, changes that never leave the wall, and a 70,000-command CLI that actually compares vendors.</p>
+      <div class="cta">
+        <a class="btn primary" href="#work">Browse the lab</a>
+        <a class="btn ghost" href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub profile</a>
+      </div>
+    </div>
+    <div class="fabric" aria-hidden="true">
+      <svg viewBox="0 0 400 264" preserveAspectRatio="xMidYMid meet">
+        <g stroke="#f4f4f5" stroke-opacity=".18" stroke-width="1" fill="none">
+          <line x1="140" y1="36" x2="48" y2="132"/><line x1="140" y1="36" x2="149" y2="132"/><line x1="140" y1="36" x2="251" y2="132"/><line x1="140" y1="36" x2="352" y2="132"/>
+          <line x1="260" y1="36" x2="48" y2="132"/><line x1="260" y1="36" x2="149" y2="132"/><line x1="260" y1="36" x2="251" y2="132"/><line x1="260" y1="36" x2="352" y2="132"/>
+          <line x1="48" y1="132" x2="100" y2="228"/><line x1="149" y1="132" x2="100" y2="228"/><line x1="149" y1="132" x2="200" y2="228"/>
+          <line x1="251" y1="132" x2="200" y2="228"/><line x1="251" y1="132" x2="300" y2="228"/><line x1="352" y1="132" x2="300" y2="228"/>
+        </g>
+        <circle cx="140" cy="36" r="5" fill="#f4f4f5"/><circle cx="260" cy="36" r="5" fill="#f4f4f5"/>
+        <circle cx="48" cy="132" r="4.2" fill="#c4c4cc"/><circle cx="149" cy="132" r="4.2" fill="#c4c4cc"/><circle cx="251" cy="132" r="4.2" fill="#c4c4cc"/><circle cx="352" cy="132" r="4.2" fill="#c4c4cc"/>
+        <circle cx="100" cy="228" r="3.4" fill="#8a8a93"/><circle cx="200" cy="228" r="3.4" fill="#8a8a93"/><circle cx="300" cy="228" r="3.4" fill="#8a8a93"/>
+      </svg>
+      <div class="cap"><span>Clos fabric</span><span>2 spine · 4 leaf</span></div>
+    </div>
+  </div>
+
+  <div class="stats wrap" style="max-width:none;padding:0;">
+    <div class="wrap" style="display:contents">
+      <div><b>20+</b><span>years on the wire</span></div>
+      <div><b>9</b><span>public labs & tools</span></div>
+      <div><b>70k+</b><span>CLI commands indexed</span></div>
+      <div><b>26</b><span>devices in the AI lab</span></div>
+      <div><b>17</b><span>vendors compared</span></div>
+    </div>
+  </div>
+
+  <section class="block wrap" id="work">
+    <div class="sec-h">
+      <div>
+        <h2>Work</h2>
+        <p class="sub">Nine public labs and tools. Docs first. Fail-closed by default.</p>
+      </div>
+      <input class="search" id="q" type="search" placeholder="Filter by name, vendor, or tag" aria-label="Filter projects">
+    </div>
+    <div class="filters" role="tablist" aria-label="Project domain">
+      <button type="button" data-domain="all" aria-pressed="true">All</button>
+      <button type="button" data-domain="closed-loop">Closed-loop</button>
+      <button type="button" data-domain="security">Security</button>
+      <button type="button" data-domain="reference">Reference</button>
+      <button type="button" data-domain="llm">LLM tooling</button>
+    </div>
+    <div class="grid three" id="grid">
+      <a class="card" data-domain="security" data-hay="argus agentic ai penetration tester guardrail hmac active directory" href="https://gesh75.github.io/argus/">
+        <span class="chip">Security</span>
+        <h3>argus</h3>
+        <p>Agentic AI penetration tester — reasons, chains, and adapts across network, host, Active Directory and web. Read-only by default behind a fail-closed 7-layer guardrail.</p>
+        <div class="tags"><span class="tag">7-layer guardrail</span><span class="tag">HMAC audit</span><span class="tag">read-only</span></div>
+      </a>
+      <a class="card" data-domain="security" data-hay="aegis air-gapped digital twin batfish pci soc2 nist containerlab" href="https://gesh75.github.io/aegis/">
+        <span class="chip">Security</span>
+        <h3>aegis</h3>
+        <p>Air-gapped pre-deployment network change validation against a real containerlab digital twin. Only a sealed PCI / SOC2 / NIST evidence badge ever leaves. Zero egress.</p>
+        <div class="tags"><span class="tag">air-gapped</span><span class="tag">digital twin</span><span class="tag">PCI / SOC2 / NIST</span></div>
+      </a>
+      <a class="card" data-domain="closed-loop" data-hay="multivendor-ai-network-lab pydantic-ai 26 devices mcp juniper arista nokia frr remediation" href="https://gesh75.github.io/multivendor-ai-network-lab/">
+        <span class="chip">Closed-loop</span>
+        <h3>multivendor-ai-network-lab</h3>
+        <p>26-device lab that closes the loop — anomalies auto-remediate, risk-gated, with RFC 6241 confirmed-commit rollback. Pydantic-AI orchestrator and 68 MCP tools.</p>
+        <div class="tags"><span class="tag">26 devices</span><span class="tag">68 MCP tools</span><span class="tag">RFC 6241</span></div>
+      </a>
+      <a class="card" data-domain="closed-loop" data-hay="napalm-live-lab arista nokia frr containerlab commands coverage" href="https://gesh75.github.io/napalm-live-lab/">
+        <span class="chip">Closed-loop</span>
+        <h3>napalm-live-lab</h3>
+        <p>Honest, live multivendor NAPALM coverage — Arista cEOS, Nokia SR Linux and FRR — plus a safe-by-default console of 2,361 curated commands.</p>
+        <div class="tags"><span class="tag">NAPALM</span><span class="tag">2,361 commands</span><span class="tag">read-only guard</span></div>
+      </a>
+      <a class="card" data-domain="closed-loop" data-hay="netlog-ai syslog junos eos frr sanitize llm root-cause" href="https://gesh75.github.io/netlog-ai/">
+        <span class="chip">Closed-loop</span>
+        <h3>netlog-ai</h3>
+        <p>Sanitize-first AI log analyzer that turns raw syslog and CLI into prioritized, copy-pastable root-cause playbooks. Local model or Claude. 139 tests.</p>
+        <div class="tags"><span class="tag">sanitize-first</span><span class="tag">LLM RCA</span><span class="tag">139 tests</span></div>
+      </a>
+      <a class="card" data-domain="reference" data-hay="multivendor-cli-configurator 70000 cisco juniper arista nokia fortinet palo alto netconf ansible" href="https://gesh75.github.io/multivendor-cli-configurator/docs/">
+        <span class="chip">Reference</span>
+        <h3>multivendor-cli-configurator</h3>
+        <p>70,000+ CLI commands across 17 vendors — searchable, concept-aligned N-vendor compare, NETCONF / Ansible drawers. Single HTML, zero deps.</p>
+        <div class="tags"><span class="tag">70k commands</span><span class="tag">17 vendors</span><span class="tag">zero-dep</span></div>
+      </a>
+      <a class="card" data-domain="reference" data-hay="network-observability-architecture netbox source of truth telemetry dual-signal alerts" href="https://gesh75.github.io/network-observability-architecture/">
+        <span class="chip">Reference</span>
+        <h3>network-observability-architecture</h3>
+        <p>Vendor-neutral pattern: multi-vendor telemetry, NetBox as source of truth, alerts gated on two agreeing signals, automation read-only until a human approves.</p>
+        <div class="tags"><span class="tag">NetBox</span><span class="tag">dual-signal</span><span class="tag">human-approved</span></div>
+      </a>
+      <a class="card" data-domain="llm" data-hay="claude-mastery-hub claude code mcp skills subagents hooks" href="https://gesh75.github.io/claude-mastery-hub/">
+        <span class="chip">LLM tooling</span>
+        <h3>claude-mastery-hub</h3>
+        <p>Interactive single-page guide to mastering Claude — the app, Claude Code, the API, MCP, skills, subagents, and hooks. Zero-dependency reference.</p>
+        <div class="tags"><span class="tag">Claude Code</span><span class="tag">MCP</span><span class="tag">skills</span></div>
+      </a>
+      <a class="card" data-domain="llm" data-hay="claude-skill-lint linter frontmatter progressive disclosure" href="https://github.com/gesh75/claude-skill-lint">
+        <span class="chip">LLM tooling</span>
+        <h3>claude-skill-lint</h3>
+        <p>Zero-dependency linter for Claude Code skills — frontmatter, description length, progressive disclosure, dead references, stale model IDs.</p>
+        <div class="tags"><span class="tag">linter</span><span class="tag">CLI</span><span class="tag">zero-dep</span></div>
+      </a>
+    </div>
+    <p class="empty" id="empty" hidden>No projects match that filter.</p>
+  </section>
+
+  <section class="block wrap" id="principles" style="border-top:1px solid var(--border)">
+    <h2>Principles</h2>
+    <p class="sub">How the lab is built — and why the agents do not get a blank check.</p>
+    <div class="principles" style="margin-top:2.5rem">
+      <article><div class="n">01</div><h3>Read-only by default</h3><p>Agents observe first. Writes are gated, confirmed, and reversible.</p></article>
+      <article><div class="n">02</div><h3>Sanitize before the model</h3><p>Raw syslog never meets an LLM. The model sees a problem, not a credential.</p></article>
+      <article><div class="n">03</div><h3>Fail closed</h3><p>A 7-layer guardrail. Risk gates of auto / approve / page-out. Unclear policy means nothing fires.</p></article>
+      <article><div class="n">04</div><h3>Evidence, not screenshots</h3><p>What leaves the wall is a sealed badge. HMAC-audited runs. Immutable GAIT.</p></article>
+      <article><div class="n">05</div><h3>Honest coverage</h3><p>Publish what actually works on Arista, Nokia SR Linux, and FRR — not a marketing matrix.</p></article>
+      <article><div class="n">06</div><h3>Human-approved change</h3><p>RFC 6241 confirmed-commit with rollback. Automation proposes; a person owns the blast radius.</p></article>
     </div>
   </section>
 
-  <section id="projects">
-    <div class="sec-h"><h2>Projects</h2><span>8 open-source projects</span></div>
-    <div class="grid">
+  <section class="block wrap" id="stack" style="border-top:1px solid var(--border)">
+    <h2>Stack</h2>
+    <div class="stack" style="margin-top:2rem">
+      <div><h3>Vendors</h3><ul><li>Juniper</li><li>Arista</li><li>Cisco</li><li>Nokia</li><li>Palo Alto</li><li>Fortinet</li><li>FRR</li><li>VyOS</li><li>SONiC</li></ul></div>
+      <div><h3>Protocols</h3><ul><li>BGP</li><li>MPLS</li><li>EVPN</li><li>SD-WAN</li><li>SASE</li><li>Zero Trust</li><li>NETCONF</li></ul></div>
+      <div><h3>Automation</h3><ul><li>Python</li><li>Ansible</li><li>Nornir</li><li>NAPALM</li><li>containerlab</li><li>MCP</li></ul></div>
+      <div><h3>AI</h3><ul><li>Claude</li><li>Pydantic-AI</li><li>on-prem LLMs</li><li>Ollama</li><li>sanitize-first</li></ul></div>
+    </div>
+  </section>
 
-      <a class="card" style="--accent:#f43f5e" href="https://gesh75.github.io/argus/">
-        <div class="top"><span class="ico">👁️</span></div>
-        <h3>argus</h3>
-        <p>Agentic AI penetration tester — reasons, chains, and adapts across network, host, Active Directory
-           and web targets, read-only by default behind a fail-closed 7-layer guardrail. Proof-annotated attack
-           paths, HMAC-audited runs, and Claude / Ollama / offline backends.</p>
-        <div class="tags"><span class="tag">AI pentester</span><span class="tag">7-layer guardrail</span><span class="tag">HMAC audit</span><span class="tag">active-directory</span></div>
-        <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/argus" style="color:inherit">repo ↗</a></span></span>
-      </a>
-
-      <a class="card" style="--accent:#f59e0b" href="https://gesh75.github.io/napalm-live-lab/">
-        <div class="top"><span class="ico">🔥</span></div>
-        <h3>napalm-live-lab</h3>
-        <p>An honest, live multivendor NAPALM coverage matrix — Arista cEOS, Nokia SR Linux &amp; FRR in
-           containerlab — plus a safe-by-default Command Console that runs 2,361 curated commands live against the lab.</p>
-        <div class="tags"><span class="tag">NAPALM</span><span class="tag">19 nodes</span><span class="tag">2,361 commands</span><span class="tag">read-only guard</span></div>
-        <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/napalm-live-lab" style="color:inherit">repo ↗</a></span></span>
-      </a>
-
-      <a class="card" style="--accent:#5eead4" href="https://gesh75.github.io/multivendor-ai-network-lab/">
-        <div class="top"><span class="ico">🛰️</span></div>
-        <h3>multivendor-ai-network-lab</h3>
-        <p>26-device multivendor AI network lab that closes the loop — detected anomalies auto-remediate,
-           risk-gated (auto / approve / page-out) with RFC 6241 confirmed-commit rollback. Pydantic-AI
-           orchestrator, eval harness with LLM-as-judge, immutable GAIT audit, path trace, intent-drift
-           detector, and CVE scanner.</p>
-        <div class="tags"><span class="tag">Pydantic-AI</span><span class="tag">26 devices</span><span class="tag">MCP · 68 tools</span><span class="tag">closed-loop remediation</span><span class="tag">Juniper/Arista/Nokia SRL/FRR</span></div>
-        <span class="open">Open docs →<span class="sub"><a href="https://gesh75.github.io/multivendor-ai-network-lab/portal.html" style="color:inherit">fabric portal ↗</a></span></span>
-      </a>
-
-      <a class="card" style="--accent:#34d399" href="https://gesh75.github.io/multivendor-cli-configurator/docs/">
-        <div class="top"><span class="ico">⌨️</span></div>
-        <h3>multivendor-cli-configurator</h3>
-        <p>70,000+ CLI commands across 17 network vendors &amp; tools — a searchable, deep-linkable cheatsheet
-           with concept-aligned N-vendor compare and per-command NETCONF / ncclient / Ansible drawers.
-           Single HTML, zero deps.</p>
-        <div class="tags"><span class="tag">70k commands</span><span class="tag">17 vendors</span><span class="tag">N-vendor compare</span><span class="tag">zero-dep</span></div>
-        <span class="open">Open docs →<span class="sub"><a href="https://gesh75.github.io/multivendor-cli-configurator/" style="color:inherit">live tool ↗</a></span></span>
-      </a>
-
-      <a class="card" style="--accent:#2dd4bf" href="https://gesh75.github.io/aegis/">
-        <div class="top"><span class="ico">🛡️</span></div>
-        <h3>aegis</h3>
-        <p>Air-gapped pre-deployment network change validation against a real containerlab digital twin —
-           a self-hosted LLM proposes inside the wall; only a sealed PCI / SOC2 / NIST evidence badge ever leaves. Zero egress.</p>
-        <div class="tags"><span class="tag">air-gapped</span><span class="tag">digital twin</span><span class="tag">Batfish</span><span class="tag">PCI/SOC2/NIST</span></div>
-        <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/aegis" style="color:inherit">repo ↗</a></span></span>
-      </a>
-
-      <a class="card" style="--accent:#60a5fa" href="https://gesh75.github.io/netlog-ai/">
-        <div class="top"><span class="ico">📋</span></div>
-        <h3>netlog-ai</h3>
-        <p>Local, sanitize-first AI network log analyzer (Junos / EOS / FRR) that turns raw syslog and CLI
-           output into prioritized, copy-pastable root-cause playbooks. Runs on a local model or Anthropic Claude.</p>
-        <div class="tags"><span class="tag">sanitize-first</span><span class="tag">LLM root-cause</span><span class="tag">139 tests</span></div>
-        <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/netlog-ai" style="color:inherit">repo ↗</a></span></span>
-      </a>
-
-      <a class="card" style="--accent:#a78bfa" href="https://gesh75.github.io/claude-mastery-hub/">
-        <div class="top"><span class="ico">🧠</span></div>
-        <h3>claude-mastery-hub</h3>
-        <p>Interactive single-page guide to mastering Claude — the app, Claude Code, the API, MCP, skills,
-           subagents, and hooks. Zero-dependency, deep-linkable reference.</p>
-        <div class="tags"><span class="tag">Claude Code</span><span class="tag">MCP</span><span class="tag">skills</span><span class="tag">zero-dep</span></div>
-        <span class="open">Open docs →<span class="sub"><a href="https://github.com/gesh75/claude-mastery-hub" style="color:inherit">repo ↗</a></span></span>
-      </a>
-
-      <a class="card" style="--accent:#f472b6" href="https://github.com/gesh75/claude-skill-lint">
-        <div class="top"><span class="ico">🧹</span></div>
-        <h3>claude-skill-lint</h3>
-        <p>Zero-dependency linter for Claude Code skills — checks frontmatter, description length,
-           progressive disclosure, dead references, and stale model IDs so a skills library stays lean and loadable.</p>
-        <div class="tags"><span class="tag">linter</span><span class="tag">Claude Code skills</span><span class="tag">CLI</span><span class="tag">zero-dep</span></div>
-        <span class="open">View repo →</span>
-      </a>
-
+  <section class="block wrap" id="about" style="border-top:1px solid var(--border)">
+    <p class="eyebrow">About</p>
+    <h2 style="margin-top:.6rem;font-size:clamp(1.8rem,4vw,2.6rem)">Senior network engineering leader. AI tools builder.</h2>
+    <div class="about" style="margin-top:2rem">
+      <div>
+        <p>Twenty-plus years on multivendor networks — Juniper, Arista, Cisco, Palo Alto, Fortinet — spanning BGP/MPLS, SD-WAN, SASE, and Zero Trust. The last few years have been about putting that craft into agents that can see, decide, and (only then) change a fabric.</p>
+        <p>GESH Lab is the public documentation hub for those projects. Private work stays private. Everything here is documented and meant to be cloned.</p>
+      </div>
+      <aside class="aside">
+        <h3>Connect</h3>
+        <a href="https://github.com/gesh75" target="_blank" rel="noopener">github.com/gesh75</a>
+        <a href="https://www.linkedin.com/in/gesh75" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://x.com/gesh755" target="_blank" rel="noopener">x.com/gesh755</a>
+      </aside>
     </div>
   </section>
 </main>
 
-<footer class="wrap">
-  <div class="foot-row">
-    <div>© <span id="yr">2026</span> Georgi Gaydarov · Network &amp; AI engineering</div>
-    <div>
-      <a href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub</a> ·
+<footer>
+  <div class="wrap foot">
+    <div>Georgi Gaydarov · Network automation · AI for NetOps</div>
+    <nav>
+      <a href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/gesh75" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
+      <a href="https://x.com/gesh755" target="_blank" rel="noopener">X</a>
+    </nav>
   </div>
 </footer>
-
 <script>
-  (function(){
-    try{ document.getElementById('yr').textContent = new Date().getFullYear(); }catch(e){}
-    var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, {threshold:.12}) : null;
-    document.querySelectorAll('.card').forEach(function(c,i){
-      c.style.transitionDelay = (i*70)+'ms';
-      if(io){ io.observe(c); } else { c.classList.add('in'); }
+(function () {
+  var domain = "all";
+  var q = document.getElementById("q");
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
+  var empty = document.getElementById("empty");
+  var buttons = document.querySelectorAll(".filters button");
+  function apply() {
+    var query = (q.value || "").trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function (c) {
+      var ok = domain === "all" || c.getAttribute("data-domain") === domain;
+      if (ok && query) ok = (c.getAttribute("data-hay") || "").indexOf(query) !== -1;
+      c.hidden = !ok;
+      if (ok) shown++;
     });
-  })();
+    empty.hidden = shown !== 0;
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      domain = b.getAttribute("data-domain");
+      buttons.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      apply();
+    });
+  });
+  q.addEventListener("input", apply);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && e.target !== q && e.target.tagName !== "INPUT") {
+      e.preventDefault();
+      q.focus();
+    }
+  });
+})();
 </script>
 </body>
 </html>
