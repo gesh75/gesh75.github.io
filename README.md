@@ -11,7 +11,7 @@ Command-center visual language shared with [Aegis](https://gesh75.github.io/aegi
 | Project | What it is |
 |---|---|
 | [argus](https://github.com/gesh75/argus) | Fail-closed defensive assessment orchestrator — 7-layer guardrail, OOB HMAC signer (PR #18), 315 tests, unattended mode locked |
-| [aegis](https://github.com/gesh75/aegis) | Air-gapped change validation. v0.2.0: G1–G5 promotion, fail-closed idle BGP, detached Ed25519 seals, 11 frameworks |
+| [aegis](https://github.com/gesh75/aegis) | Air-gapped change validation. v0.2.0: G1–G5 promotion, HMAC approval tokens (aegis1.), fail-closed idle BGP, detached Ed25519 seals, 11 frameworks |
 | [multivendor-ai-network-lab](https://github.com/gesh75/multivendor-ai-network-lab) | 26-device lab that remediates — Phase 6 Lab Ops portal, 69 MCP tools, RFC 6241 confirmed-commit, honest GAIT |
 | [napalm-live-lab](https://github.com/gesh75/napalm-live-lab) | Live multivendor NAPALM coverage matrix + safe-by-default command console (Arista cEOS / Nokia SR Linux / FRR in containerlab) |
 | [netlog-ai](https://github.com/gesh75/netlog-ai) | Sanitize-first AI log analyzer — v0.6.0: Grok, causal timeline, 80 patterns, 423 tests, MCP connectors |
