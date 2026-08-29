@@ -18,7 +18,7 @@ grid.
 | [napalm-live-lab](https://github.com/gesh75/napalm-live-lab) | Live multivendor NAPALM coverage matrix + safe-by-default command console (Arista cEOS / Nokia SR Linux / FRR in containerlab) |
 | [netlog-ai](https://github.com/gesh75/netlog-ai) | Sanitize-first AI network log analyzer (Junos / EOS / FRR) with LLM-assisted root-cause playbooks |
 | [multivendor-cli-configurator](https://github.com/gesh75/multivendor-cli-configurator) | 70,000+ CLI commands across 17 vendors & tools — searchable, comparable, zero-dependency single-HTML cheatsheet |
-| [network-observability-architecture](https://github.com/gesh75/network-observability-architecture) | Vendor-neutral reference architecture for observability and source-of-truth management (NetBox, dual-signal alerts) |
+| [network-observability-architecture](https://github.com/gesh75/network-observability-architecture) | v2.0 interactive console — OTLP/Alloy, NetBox as intent, dual-signal alerts, read-only AI control plane |
 | [claude-mastery-hub](https://github.com/gesh75/claude-mastery-hub) | Interactive single-page guide to mastering Claude — app, Claude Code, API, MCP, skills, subagents, hooks |
 | [claude-skill-lint](https://github.com/gesh75/claude-skill-lint) | Zero-dependency linter for Claude Code skills — frontmatter, progressive disclosure, dead refs, stale model IDs |
 
