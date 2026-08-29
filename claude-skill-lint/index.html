@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>claude-skill-lint 0.5 — GESH Lab</title>
+<meta name="description" content="Zero-dependency linter for Claude Code Agent Skills. 90+ checks, 2026 model IDs, GitHub Action, and a 22-skill NetOps pack.">
+<meta name="theme-color" content="#09090b">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#09090b; --fg:#f4f4f5; --card:#111114; --muted:#a1a1aa; --subtle:#71717a;
+    --border:#27272a; --primary:#e4e4e7; --primary-fg:#09090b; --ok:#86efac;
+    --shadow:0 0 0 1px rgba(255,255,255,.08);
+    --sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+    --display:"Newsreader","Iowan Old Style",Georgia,serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --max:72rem;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); line-height:1.5; }
+  a { color:inherit; }
+  h1,h2,h3 { text-wrap:balance; font-weight:500; letter-spacing:-0.03em; }
+  .wrap { max-width:var(--max); margin:0 auto; padding:0 1.5rem; }
+  header { position:sticky; top:0; z-index:40; border-bottom:1px solid var(--border); background:color-mix(in srgb,var(--bg) 85%,transparent); backdrop-filter:blur(8px); }
+  .nav { display:flex; align-items:center; justify-content:space-between; height:4rem; }
+  .brand { display:flex; align-items:center; gap:.65rem; text-decoration:none; font-weight:500; font-size:.9rem; }
+  .brand svg { width:1.75rem; height:1.75rem; }
+  .chip { font-size:.7rem; color:var(--muted); box-shadow:var(--shadow); border-radius:999px; padding:.15rem .55rem; }
+  .navlinks { display:flex; gap:.15rem; }
+  .navlinks a { color:var(--muted); text-decoration:none; font-size:.875rem; padding:.5rem .75rem; border-radius:.5rem; }
+  .navlinks a:hover { color:var(--fg); }
+  .hero { padding:3.5rem 0 3rem; }
+  .eyebrow { color:var(--muted); font-size:.75rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; }
+  h1 { font-family:var(--display); font-size:clamp(2.25rem,5vw,3.6rem); line-height:1.08; margin:1.1rem 0 0; }
+  .lede { color:var(--muted); font-size:1.125rem; max-width:38rem; margin-top:1.4rem; }
+  .cta { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:2rem; }
+  .btn { display:inline-flex; align-items:center; height:2.75rem; padding:0 1rem; border-radius:.5rem; font-size:.875rem; font-weight:500; text-decoration:none; }
+  .btn.primary { background:var(--primary); color:var(--primary-fg); }
+  .btn.ghost { box-shadow:var(--shadow); }
+  .stats { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  @media (min-width:720px) { .stats { grid-template-columns:repeat(5,1fr); } }
+  .stats div { background:var(--bg); padding:1.6rem 1.25rem; }
+  .stats b { display:block; font-size:1.75rem; font-weight:500; font-variant-numeric:tabular-nums; }
+  .stats span { display:block; margin-top:.4rem; color:var(--muted); font-size:.75rem; }
+  section { padding:4rem 0; border-top:1px solid var(--border); }
+  h2 { font-family:var(--display); font-size:clamp(1.6rem,3vw,2rem); margin:0; }
+  .sub { color:var(--muted); font-size:.9rem; max-width:36rem; margin:.6rem 0 0; }
+  .grid { display:grid; gap:1rem; margin-top:2rem; }
+  @media (min-width:720px) { .grid.two { grid-template-columns:1fr 1fr; } .grid.three { grid-template-columns:1fr 1fr 1fr; } }
+  .card { background:var(--card); border-radius:1rem; padding:1.25rem; box-shadow:var(--shadow); }
+  .card h3 { font-family:var(--display); font-size:1.25rem; margin:0 0 .5rem; }
+  .card p, .card li { color:var(--muted); font-size:.875rem; }
+  pre { background:var(--card); box-shadow:var(--shadow); border-radius:1rem; padding:1.25rem; overflow:auto; font-family:var(--mono); font-size:.78rem; color:var(--muted); line-height:1.55; }
+  .pack { display:grid; gap:.65rem; margin-top:1.5rem; }
+  @media (min-width:640px) { .pack { grid-template-columns:1fr 1fr; } }
+  @media (min-width:960px) { .pack { grid-template-columns:1fr 1fr 1fr; } }
+  .pack a { display:block; background:var(--card); border-radius:1rem; padding:1rem 1.1rem; text-decoration:none; box-shadow:var(--shadow); }
+  .pack a:hover { box-shadow:0 0 0 1px rgba(255,255,255,.14); }
+  .pack b { font-family:var(--display); font-size:1.05rem; }
+  .pack span { display:block; margin-top:.35rem; color:var(--muted); font-size:.8rem; }
+  footer { border-top:1px solid var(--border); padding:2.5rem 0 3.5rem; color:var(--subtle); font-size:.85rem; }
+  .foot { display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; }
+  footer a { color:var(--muted); text-decoration:none; }
+  footer a:hover { color:var(--fg); }
+  :focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="https://gesh75.github.io/">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#e4e4e7"/><path d="M8 11h16M8 16h12M8 21h8" stroke="#09090b" stroke-width="1.8" stroke-linecap="round"/><path d="M21 19.2l1.4 1.4 3.2-3.4" fill="none" stroke="#09090b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      claude-skill-lint
+      <span class="chip">0.5</span>
+    </a>
+    <nav class="navlinks">
+      <a href="#install">Install</a>
+      <a href="#v05">v0.5</a>
+      <a href="#pack">NetOps pack</a>
+      <a href="https://github.com/gesh75/claude-skill-lint">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap hero">
+    <p class="eyebrow">GESH Lab · LLM tooling</p>
+    <h1>Lint the skill before it taxes every turn.</h1>
+    <p class="lede">Zero-dependency linter for Claude Code and Agent Skills. Frontmatter, progressive disclosure, dead refs, secrets, stale model IDs — plus a 22-skill NetOps pack for the change window.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/gesh75/claude-skill-lint">View on GitHub</a>
+      <a class="btn ghost" href="#install">Install the CLI</a>
+    </div>
+  </div>
+  <div class="stats">
+    <div><b>90+</b><span>lint checks</span></div>
+    <div><b>22</b><span>NetOps skills</span></div>
+    <div><b>0</b><span>runtime deps</span></div>
+    <div><b>3</b><span>profiles</span></div>
+    <div><b>2026</b><span>Claude fields</span></div>
+  </div>
+  <section class="wrap" id="v05">
+    <h2>What 0.5 adds</h2>
+    <p class="sub">CLI and playground now agree. The GitHub Action pin is <code>@v0.5.0</code>.</p>
+    <div class="grid three">
+      <article class="card"><h3>2026 models</h3><p>Opus 5, Sonnet 5, Fable 5, Mythos 5 are current. Opus 4.8 / Sonnet 4.6 / Haiku 4.5 stay current. Claude 3.x is stale.</p></article>
+      <article class="card"><h3>Computer-use safety</h3><p><code>computer-unscoped</code> fails closed when computer use is paired with bare Bash on a jump host.</p></article>
+      <article class="card"><h3>Out of beta</h3><p>Agent Skills no longer need the <code>skills-2025-10-02</code> header. The linter flags copy that still says they do.</p></article>
+    </div>
+  </section>
+  <section class="wrap" id="install">
+    <h2>Install</h2>
+    <p class="sub">Python 3.8+, no dependencies. Exit non-zero on ERROR so it drops into CI.</p>
+    <div class="grid two" style="margin-top:1.5rem">
+      <div>
+        <h3 style="font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem">Install script</h3>
+<pre>curl -fsSL https://raw.githubusercontent.com/gesh75/claude-skill-lint/main/install.sh -o install.sh
+bash install.sh
+skill-lint ~/.claude/skills</pre>
+      </div>
+      <div>
+        <h3 style="font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem">GitHub Action</h3>
+<pre>uses: gesh75/claude-skill-lint@v0.5.0
+with:
+  path: skills
+  profile: claude-code
+  min-score: "80"</pre>
+      </div>
+    </div>
+  </section>
+  <section class="wrap" id="pack">
+    <h2>NetOps pack</h2>
+    <p class="sub">Copy into <code>~/.claude/skills/<name>/SKILL.md</code>. Each file has a do-not-use boundary, numbered steps, and a verify loop.</p>
+    <div class="pack">
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/netops-change-guard/SKILL.md"><b>netops-change-guard</b><span>Confirmed-commit + rollback</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/sdwan-overlay-architect/SKILL.md"><b>sdwan-overlay-architect</b><span>Overlay / DIA / SLA classes</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/sase-zero-trust/SKILL.md"><b>sase-zero-trust</b><span>ZTNA / SSE / posture</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/bgp-evpn-clos/SKILL.md"><b>bgp-evpn-clos</b><span>VXLAN EVPN fabric</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/mcp-netops-safety/SKILL.md"><b>mcp-netops-safety</b><span>MCP tools on a jump host</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/config-diff-preflight/SKILL.md"><b>config-diff-preflight</b><span>Secrets and blast radius</span></a>
+    </div>
+    <p class="sub" style="margin-top:1.25rem">All 22 live in the repo under <a href="https://github.com/gesh75/claude-skill-lint/tree/main/skills/netops">skills/netops</a>.</p>
+  </section>
+</main>
+<footer>
+  <div class="wrap foot">
+    <div>GESH Lab · claude-skill-lint 0.5.0</div>
+    <div>
+      <a href="https://gesh75.github.io/">GESH Lab</a>
+      ·
+      <a href="https://github.com/gesh75/claude-skill-lint">GitHub</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
