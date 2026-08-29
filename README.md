@@ -14,7 +14,7 @@ Command-center visual language shared with [Aegis](https://gesh75.github.io/aegi
 | [aegis](https://github.com/gesh75/aegis) | Air-gapped change validation. v0.2.0: G1–G5 promotion, fail-closed idle BGP, detached Ed25519 seals, 11 frameworks |
 | [multivendor-ai-network-lab](https://github.com/gesh75/multivendor-ai-network-lab) | 26-device lab that remediates — Phase 6 Lab Ops portal, 69 MCP tools, RFC 6241 confirmed-commit, honest GAIT |
 | [napalm-live-lab](https://github.com/gesh75/napalm-live-lab) | Live multivendor NAPALM coverage matrix + safe-by-default command console (Arista cEOS / Nokia SR Linux / FRR in containerlab) |
-| [netlog-ai](https://github.com/gesh75/netlog-ai) | Sanitize-first AI log analyzer — 0.6 in flight: Grok, causal timeline, 80 patterns, 423 tests, MCP connectors |
+| [netlog-ai](https://github.com/gesh75/netlog-ai) | Sanitize-first AI log analyzer — v0.6.0: Grok, causal timeline, 80 patterns, 423 tests, MCP connectors |
 | [multivendor-cli-configurator](https://github.com/gesh75/multivendor-cli-configurator) | 70,000+ CLI commands across 17 vendors — searchable cheatsheet **plus CLI Studio** (intent, migrate, recipes, EOS/FRR/VyOS parsers, FRR lab) |
 | [network-observability-architecture](https://github.com/gesh75/network-observability-architecture) | v2.0 interactive console: OTLP/Alloy, Tempo, gNMI, freshness SLOs, dual-signal lab, read-only AI control plane |
 | [claude-mastery-hub](https://github.com/gesh75/claude-mastery-hub) | Interactive single-page guide to mastering Claude — app, Claude Code, API, MCP, skills, subagents, hooks |
