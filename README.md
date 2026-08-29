@@ -20,7 +20,7 @@ grid.
 | [multivendor-cli-configurator](https://github.com/gesh75/multivendor-cli-configurator) | 70,000+ CLI commands across 17 vendors — searchable cheatsheet **plus CLI Studio** (intent, migrate, recipes, EOS/FRR/VyOS parsers, FRR lab) |
 | [network-observability-architecture](https://github.com/gesh75/network-observability-architecture) | Vendor-neutral reference architecture for observability and source-of-truth management (NetBox, dual-signal alerts) |
 | [claude-mastery-hub](https://github.com/gesh75/claude-mastery-hub) | Interactive single-page guide to mastering Claude — app, Claude Code, API, MCP, skills, subagents, hooks |
-| [claude-skill-lint](https://github.com/gesh75/claude-skill-lint) | Zero-dependency linter for Claude Code skills — frontmatter, progressive disclosure, dead refs, stale model IDs |
+| [claude-skill-lint](https://gesh75.github.io/claude-skill-lint/) | Zero-dependency linter for Claude Code skills — frontmatter, progressive disclosure, dead refs, stale model IDs |
 
 ## What this redesign fixed
 
