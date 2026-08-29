@@ -6,12 +6,18 @@
 <title>claude-skill-lint 0.5 — GESH Lab</title>
 <meta name="description" content="Zero-dependency linter for Claude Code Agent Skills. 90+ checks, 2026 model IDs, GitHub Action, and a 22-skill NetOps pack.">
 <meta name="theme-color" content="#09090b">
+<meta property="og:title" content="claude-skill-lint 0.5 — GESH Lab">
+<meta property="og:description" content="Zero-dependency linter for Claude Code Agent Skills. 90+ checks, 2026 models, computer-use safety, 22 NetOps skills.">
+<meta property="og:url" content="https://gesh75.github.io/claude-skill-lint/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://gesh75.github.io/claude-skill-lint/">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg:#09090b; --fg:#f4f4f5; --card:#111114; --muted:#a1a1aa; --subtle:#71717a;
     --border:#27272a; --primary:#e4e4e7; --primary-fg:#09090b; --ok:#86efac;
+    --warn:#fcd34d; --err:#fda4af; --info:#a5b4fc;
     --shadow:0 0 0 1px rgba(255,255,255,.08);
     --sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
     --display:"Newsreader","Iowan Old Style",Georgia,serif;
@@ -19,17 +25,18 @@
     --max:72rem;
   }
   * { box-sizing:border-box; }
-  html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
-  body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); line-height:1.5; }
+  html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; overflow-x:hidden; max-width:100%; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); line-height:1.5; overflow-x:hidden; max-width:100%; }
   a { color:inherit; }
   h1,h2,h3 { text-wrap:balance; font-weight:500; letter-spacing:-0.03em; }
+  code { font-family:var(--mono); font-size:.86em; }
   .wrap { max-width:var(--max); margin:0 auto; padding:0 1.5rem; }
   header { position:sticky; top:0; z-index:40; border-bottom:1px solid var(--border); background:color-mix(in srgb,var(--bg) 85%,transparent); backdrop-filter:blur(8px); }
-  .nav { display:flex; align-items:center; justify-content:space-between; height:4rem; }
-  .brand { display:flex; align-items:center; gap:.65rem; text-decoration:none; font-weight:500; font-size:.9rem; }
+  .nav { display:flex; align-items:center; justify-content:space-between; height:4rem; gap:1rem; }
+  .brand { display:flex; align-items:center; gap:.65rem; text-decoration:none; font-weight:500; font-size:.9rem; white-space:nowrap; }
   .brand svg { width:1.75rem; height:1.75rem; }
   .chip { font-size:.7rem; color:var(--muted); box-shadow:var(--shadow); border-radius:999px; padding:.15rem .55rem; }
-  .navlinks { display:flex; gap:.15rem; }
+  .navlinks { display:flex; flex-wrap:wrap; gap:.15rem; justify-content:flex-end; }
   .navlinks a { color:var(--muted); text-decoration:none; font-size:.875rem; padding:.5rem .75rem; border-radius:.5rem; }
   .navlinks a:hover { color:var(--fg); }
   .hero { padding:3.5rem 0 3rem; }
@@ -47,25 +54,40 @@
   .stats span { display:block; margin-top:.4rem; color:var(--muted); font-size:.75rem; }
   section { padding:4rem 0; border-top:1px solid var(--border); }
   h2 { font-family:var(--display); font-size:clamp(1.6rem,3vw,2rem); margin:0; }
-  .sub { color:var(--muted); font-size:.9rem; max-width:36rem; margin:.6rem 0 0; }
+  .sub { color:var(--muted); font-size:.9rem; max-width:40rem; margin:.6rem 0 0; }
   .grid { display:grid; gap:1rem; margin-top:2rem; }
   @media (min-width:720px) { .grid.two { grid-template-columns:1fr 1fr; } .grid.three { grid-template-columns:1fr 1fr 1fr; } }
-  .card { background:var(--card); border-radius:1rem; padding:1.25rem; box-shadow:var(--shadow); }
+  .card { background:var(--card); border-radius:1rem; padding:1.25rem; box-shadow:var(--shadow); min-width:0; }
   .card h3 { font-family:var(--display); font-size:1.25rem; margin:0 0 .5rem; }
   .card p, .card li { color:var(--muted); font-size:.875rem; }
-  pre { background:var(--card); box-shadow:var(--shadow); border-radius:1rem; padding:1.25rem; overflow:auto; font-family:var(--mono); font-size:.78rem; color:var(--muted); line-height:1.55; }
+  .card .id { font-family:var(--mono); font-size:.8rem; color:var(--fg); }
+  .card .note { margin-top:.35rem; color:var(--subtle); font-size:.8rem; }
+  pre { background:var(--card); box-shadow:var(--shadow); border-radius:1rem; padding:1.25rem; overflow:auto; font-family:var(--mono); font-size:.78rem; color:var(--muted); line-height:1.55; max-width:100%; }
   .pack { display:grid; gap:.65rem; margin-top:1.5rem; }
   @media (min-width:640px) { .pack { grid-template-columns:1fr 1fr; } }
   @media (min-width:960px) { .pack { grid-template-columns:1fr 1fr 1fr; } }
-  .pack a { display:block; background:var(--card); border-radius:1rem; padding:1rem 1.1rem; text-decoration:none; box-shadow:var(--shadow); }
+  .pack a { display:block; background:var(--card); border-radius:1rem; padding:1rem 1.1rem; text-decoration:none; box-shadow:var(--shadow); min-width:0; }
   .pack a:hover { box-shadow:0 0 0 1px rgba(255,255,255,.14); }
   .pack b { font-family:var(--display); font-size:1.05rem; }
   .pack span { display:block; margin-top:.35rem; color:var(--muted); font-size:.8rem; }
+  .lvl { font-family:var(--mono); font-size:.7rem; letter-spacing:.04em; text-transform:uppercase; }
+  .lvl.err { color:var(--err); }
+  .lvl.warn { color:var(--warn); }
+  .lvl.info { color:var(--info); }
+  table { width:100%; border-collapse:collapse; font-size:.875rem; }
+  th { text-align:left; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); font-weight:500; padding:.6rem .75rem; border-bottom:1px solid var(--border); }
+  td { padding:.7rem .75rem; border-bottom:1px solid rgba(39,39,42,.7); vertical-align:top; }
+  td:first-child { font-family:var(--mono); font-size:.8rem; white-space:nowrap; }
+  .table-wrap { overflow-x:auto; margin-top:1.5rem; border-radius:1rem; box-shadow:var(--shadow); }
   footer { border-top:1px solid var(--border); padding:2.5rem 0 3.5rem; color:var(--subtle); font-size:.85rem; }
   .foot { display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; }
   footer a { color:var(--muted); text-decoration:none; }
   footer a:hover { color:var(--fg); }
   :focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+  @media (max-width:720px) {
+    .navlinks a.desk { display:none; }
+    td:first-child { white-space:normal; }
+  }
 </style>
 </head>
 <body>
@@ -78,8 +100,10 @@
     </a>
     <nav class="navlinks">
       <a href="#install">Install</a>
-      <a href="#v05">v0.5</a>
-      <a href="#pack">NetOps pack</a>
+      <a class="desk" href="#models">Models</a>
+      <a href="#checks">Checks</a>
+      <a href="#pack">NetOps</a>
+      <a href="https://github.com/gesh75/claude-skill-lint/releases/tag/v0.5.0">v0.5.0</a>
       <a href="https://github.com/gesh75/claude-skill-lint">GitHub</a>
     </nav>
   </div>
@@ -90,58 +114,134 @@
     <h1>Lint the skill before it taxes every turn.</h1>
     <p class="lede">Zero-dependency linter for Claude Code and Agent Skills. Frontmatter, progressive disclosure, dead refs, secrets, stale model IDs — plus a 22-skill NetOps pack for the change window.</p>
     <div class="cta">
-      <a class="btn primary" href="https://github.com/gesh75/claude-skill-lint">View on GitHub</a>
+      <a class="btn primary" href="https://github.com/gesh75/claude-skill-lint/releases/tag/v0.5.0">Release v0.5.0</a>
       <a class="btn ghost" href="#install">Install the CLI</a>
     </div>
   </div>
   <div class="stats">
-    <div><b>90+</b><span>lint checks</span></div>
+    <div><b>89</b><span>lint checks</span></div>
     <div><b>22</b><span>NetOps skills</span></div>
     <div><b>0</b><span>runtime deps</span></div>
     <div><b>3</b><span>profiles</span></div>
     <div><b>2026</b><span>Claude fields</span></div>
   </div>
+
   <section class="wrap" id="v05">
     <h2>What 0.5 adds</h2>
-    <p class="sub">CLI and playground now agree. The GitHub Action pin is <code>@v0.5.0</code>.</p>
+    <p class="sub">CLI and playground now agree. Pin the GitHub Action at <code>@v0.5.0</code>. Docs live here; the engine lives in one Python 3.8+ file.</p>
     <div class="grid three">
-      <article class="card"><h3>2026 models</h3><p>Opus 5, Sonnet 5, Fable 5, Mythos 5 are current. Opus 4.8 / Sonnet 4.6 / Haiku 4.5 stay current. Claude 3.x is stale.</p></article>
-      <article class="card"><h3>Computer-use safety</h3><p><code>computer-unscoped</code> fails closed when computer use is paired with bare Bash on a jump host.</p></article>
-      <article class="card"><h3>Out of beta</h3><p>Agent Skills no longer need the <code>skills-2025-10-02</code> header. The linter flags copy that still says they do.</p></article>
+      <article class="card"><h3>2026 models</h3><p>Opus 5, Sonnet 5, Fable 5, Mythos 5 are current. Opus 4.8 / Sonnet 4.6 / Haiku 4.5 stay current. Claude 3.x is <code>stale-model-id</code>. <code>--fix</code> rewrites 3.x to <code>claude-sonnet-5</code>.</p></article>
+      <article class="card"><h3>Computer-use safety</h3><p><code>computer-unscoped</code> fails closed when computer use / <code>computer_toolset</code> is paired with bare Bash on a jump host.</p></article>
+      <article class="card"><h3>Out of beta</h3><p>Agent Skills no longer need the <code>skills-2025-10-02</code> header. <code>beta-header-stale</code> flags copy that still says they do. <code>plugin-colon-name</code> catches <code>plugin:skill</code> in <code>name:</code>.</p></article>
     </div>
   </section>
+
+  <section class="wrap" id="models">
+    <h2>Current model IDs</h2>
+    <p class="sub">Anything else is <code>stale-model-id</code>. Override leftovers with <code>--allow-model</code>.</p>
+    <div class="grid three">
+      <article class="card"><div class="id">claude-opus-5</div><h3>Opus 5</h3><p>Deep reasoning, long-horizon agents.</p></article>
+      <article class="card"><div class="id">claude-opus-4-8</div><h3>Opus 4.8</h3><p>Previous flagship, still current.</p></article>
+      <article class="card"><div class="id">claude-sonnet-5</div><h3>Sonnet 5</h3><p>Default coding / NetOps agent. <code>--fix</code> target.</p></article>
+      <article class="card"><div class="id">claude-sonnet-4-6</div><h3>Sonnet 4.6</h3><p>Still current in Claude Code.</p></article>
+      <article class="card"><div class="id">claude-haiku-4-5</div><h3>Haiku 4.5</h3><p>Fast, cheap classification.</p></article>
+      <article class="card"><div class="id">claude-fable-5</div><h3>Fable 5</h3><p>Frontier class. Alias: <code>fable</code>.</p></article>
+      <article class="card"><div class="id">claude-mythos-5</div><h3>Mythos 5</h3><p>Cyberdefense / trusted access. Alias: <code>mythos</code>.</p></article>
+    </div>
+  </section>
+
   <section class="wrap" id="install">
     <h2>Install</h2>
-    <p class="sub">Python 3.8+, no dependencies. Exit non-zero on ERROR so it drops into CI.</p>
+    <p class="sub">Python 3.8+, no dependencies. Exit non-zero on ERROR so it drops into CI. <code>--fail-on-warn</code> and <code>--min-score 80</code> for stricter gates.</p>
     <div class="grid two" style="margin-top:1.5rem">
       <div>
-        <h3 style="font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem">Install script</h3>
+        <h3 class="eyebrow">Install script</h3>
 <pre>curl -fsSL https://raw.githubusercontent.com/gesh75/claude-skill-lint/main/install.sh -o install.sh
 bash install.sh
 skill-lint ~/.claude/skills</pre>
       </div>
       <div>
-        <h3 style="font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem">GitHub Action</h3>
-<pre>uses: gesh75/claude-skill-lint@v0.5.0
-with:
-  path: skills
-  profile: claude-code
-  min-score: "80"</pre>
+        <h3 class="eyebrow">Single file</h3>
+<pre>curl -O https://raw.githubusercontent.com/gesh75/claude-skill-lint/main/skill_lint.py
+chmod +x skill_lint.py
+./skill_lint.py ~/.claude/skills</pre>
       </div>
     </div>
+    <h3 class="eyebrow" style="margin-top:2rem">GitHub Action</h3>
+<pre>name: skill-lint
+on: [push, pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gesh75/claude-skill-lint@v0.5.0
+        with:
+          path: skills
+          profile: claude-code
+          sarif: skill-lint.sarif
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: skill-lint.sarif</pre>
+    <h3 class="eyebrow" style="margin-top:2rem">CLI</h3>
+<pre>skill_lint.py [PATH] [--json] [--sarif FILE] [--profile claude-code|spec|claude-ai]
+              [--allow-model ID] [--fail-on-warn] [--fix] [--stdin]
+              [--min-score N] [--ignore CODE] [--exclude GLOB]</pre>
+    <p class="sub">Profiles: <code>claude-code</code> (default, CC extensions are INFO), <code>spec</code> (strict Agent Skills), <code>claude-ai</code> (reserved names + XML). Score: errors −16, warns −6, infos −1, floor 0.</p>
   </section>
+
+  <section class="wrap" id="checks">
+    <h2>Checks</h2>
+    <p class="sub">89 rules across schema, authoring, safety, disclosure, and style. Full table in the <a href="https://github.com/gesh75/claude-skill-lint#checks">README</a>. New in 0.5:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Code</th><th>Level</th><th>What it catches</th></tr></thead>
+        <tbody>
+          <tr><td>computer-unscoped</td><td><span class="lvl warn">WARN</span></td><td>computer use / computer_toolset paired with unscoped Bash</td></tr>
+          <tr><td>beta-header-stale</td><td><span class="lvl info">INFO</span></td><td>skills-2025-10-02 treated as still required — Agent Skills are out of beta</td></tr>
+          <tr><td>plugin-colon-name</td><td><span class="lvl warn">WARN</span></td><td>name contains a colon; plugin namespace is /plugin:name at invoke time</td></tr>
+          <tr><td>stale-model-id</td><td><span class="lvl warn">WARN</span></td><td>outdated Claude model id (Claude 3.x, pre-4.5 leftovers)</td></tr>
+          <tr><td>unscoped-bash</td><td><span class="lvl warn">WARN</span></td><td>allowed-tools grants bare Bash</td></tr>
+          <tr><td>disk-wipe / reverse-shell</td><td><span class="lvl err">ERROR</span></td><td>mkfs, dd if=/dev/zero, nc -e, /dev/tcp, pty.spawn</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid three" style="margin-top:1.5rem">
+      <article class="card"><h3>Two cost surfaces</h3><p>L1 description is loaded every turn (~100 tok). L2 body loads on fire (<5k tok). L3 references/scripts are zero until read. A vague trigger is a permanent tax.</p></article>
+      <article class="card"><h3>Fail-closed CI</h3><p>Non-zero exit on ERROR. GitHub Actions annotations and SARIF 2.1.0. Treat a skill like software you install.</p></article>
+      <article class="card"><h3>Safety second pass</h3><p>Secrets, reverse shells, disk wipes, curl|bash, insecure TLS, unpinned installs, bundled .env / id_rsa.</p></article>
+    </div>
+  </section>
+
   <section class="wrap" id="pack">
     <h2>NetOps pack</h2>
-    <p class="sub">Copy into <code>~/.claude/skills/<name>/SKILL.md</code>. Each file has a do-not-use boundary, numbered steps, and a verify loop.</p>
+    <p class="sub">22 production skills. Each file lints clean at ERROR/WARN, has a do-not-use boundary, numbered steps, and a verify loop. Copy into <code>~/.claude/skills/<name>/SKILL.md</code>.</p>
     <div class="pack">
       <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/netops-change-guard/SKILL.md"><b>netops-change-guard</b><span>Confirmed-commit + rollback</span></a>
       <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/sdwan-overlay-architect/SKILL.md"><b>sdwan-overlay-architect</b><span>Overlay / DIA / SLA classes</span></a>
       <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/sase-zero-trust/SKILL.md"><b>sase-zero-trust</b><span>ZTNA / SSE / posture</span></a>
       <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/bgp-evpn-clos/SKILL.md"><b>bgp-evpn-clos</b><span>VXLAN EVPN fabric</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/senior-ne-runbook/SKILL.md"><b>senior-ne-runbook</b><span>SEV triage, RCA, TAC</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/network-manager-cadence/SKILL.md"><b>network-manager-cadence</b><span>CAB, capacity, risk</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/netbox-source-of-truth/SKILL.md"><b>netbox-source-of-truth</b><span>IPAM / DCIM intent</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/multivendor-cli-translate/SKILL.md"><b>multivendor-cli-translate</b><span>IOS-XE/XR, Junos, EOS, SR Linux</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/firewall-policy-review/SKILL.md"><b>firewall-policy-review</b><span>Shadow rules, any-any, logging</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/observability-dual-signal/SKILL.md"><b>observability-dual-signal</b><span>Alert only on two signals</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/ipv6-dual-stack/SKILL.md"><b>ipv6-dual-stack</b><span>GUA, ULA, ND, NAT64</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/dc-fabric-upgrade/SKILL.md"><b>dc-fabric-upgrade</b><span>ISSU / SMU with abort</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/wan-circuit-triage/SKILL.md"><b>wan-circuit-triage</b><span>Light levels to ISP RFO</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/campus-nac-dot1x/SKILL.md"><b>campus-nac-dot1x</b><span>802.1X / MAB / ISE</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/dns-dhcp-ipam/SKILL.md"><b>dns-dhcp-ipam</b><span>Anycast DNS, lease hygiene</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/k8s-cni-network/SKILL.md"><b>k8s-cni-network</b><span>CNI, NetworkPolicy, egress</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/cloud-hybrid-connect/SKILL.md"><b>cloud-hybrid-connect</b><span>DX / ER / Interconnect / TGW</span></a>
       <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/mcp-netops-safety/SKILL.md"><b>mcp-netops-safety</b><span>MCP tools on a jump host</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/intent-nornir-napalm/SKILL.md"><b>intent-nornir-napalm</b><span>Nornir + NAPALM dry-run</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/wifi7-campus/SKILL.md"><b>wifi7-campus</b><span>Wi-Fi 6E/7 RF and MLO</span></a>
+      <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/mpls-l3vpn/SKILL.md"><b>mpls-l3vpn</b><span>PE-CE VRF, RD/RT</span></a>
       <a href="https://github.com/gesh75/claude-skill-lint/blob/main/skills/netops/config-diff-preflight/SKILL.md"><b>config-diff-preflight</b><span>Secrets and blast radius</span></a>
     </div>
-    <p class="sub" style="margin-top:1.25rem">All 22 live in the repo under <a href="https://github.com/gesh75/claude-skill-lint/tree/main/skills/netops">skills/netops</a>.</p>
+    <p class="sub" style="margin-top:1.25rem">Source: <a href="https://github.com/gesh75/claude-skill-lint/tree/main/skills/netops">skills/netops</a>. Lint the pack with <code>python3 skill_lint.py skills/netops --quiet --min-score 90</code>.</p>
   </section>
 </main>
 <footer>
@@ -151,6 +251,10 @@ with:
       <a href="https://gesh75.github.io/">GESH Lab</a>
       ·
       <a href="https://github.com/gesh75/claude-skill-lint">GitHub</a>
+      ·
+      <a href="https://github.com/gesh75/claude-skill-lint/releases/tag/v0.5.0">Release</a>
+      ·
+      <a href="https://agentskills.io">agentskills.io</a>
     </div>
   </div>
 </footer>
