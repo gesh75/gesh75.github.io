@@ -5,388 +5,403 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GESH Lab — Network & AI Engineering</title>
 <meta name="description" content="Documentation hub for Georgi Gaydarov's open-source network automation and AI-for-NetOps projects — closed-loop labs, air-gapped change validation, an agentic pentester, and a 70k-command CLI reference.">
-<meta name="theme-color" content="#09090b">
+<meta name="theme-color" content="#090d18">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="GESH Lab — Network & AI Engineering">
+<meta property="og:description" content="Documentation hub for Georgi Gaydarov's open-source network automation and AI-for-NetOps projects — closed-loop labs, air-gapped change validation, an agentic pentester, and a 70k-command CLI reference.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gesh75.github.io/">
+<meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #09090b;
-    --fg: #f4f4f5;
-    --card: #111114;
-    --muted: #a1a1aa;
-    --subtle: #71717a;
-    --border: #27272a;
-    --primary: #e4e4e7;
-    --primary-fg: #09090b;
-    --shadow: 0 0 0 1px rgba(255,255,255,.08);
-    --shadow-h: 0 0 0 1px rgba(255,255,255,.14);
-    --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
-    --display: "Newsreader", "Iowan Old Style", Georgia, serif;
-    --max: 72rem;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    line-height: 1.5;
-    min-height: 100dvh;
-  }
-  a { color: inherit; }
-  h1, h2, h3 { text-wrap: balance; font-weight: 500; letter-spacing: -0.03em; }
-  p { text-wrap: pretty; }
-  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
-  :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
-  .skip {
-    position: absolute; left: -999px; top: 0;
-  }
-  .skip:focus { left: 1rem; top: 1rem; z-index: 50; background: var(--primary); color: var(--primary-fg); padding: .5rem .75rem; border-radius: .5rem; }
-  header {
-    position: sticky; top: 0; z-index: 40;
-    border-bottom: 1px solid var(--border);
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: blur(8px);
-  }
-  .nav {
-    display: flex; align-items: center; justify-content: space-between;
-    height: 4rem;
-  }
-  .brand { display: flex; align-items: center; gap: .65rem; text-decoration: none; font-weight: 500; font-size: .9rem; }
-  .brand svg { width: 1.75rem; height: 1.75rem; }
-  .navlinks { display: flex; align-items: center; gap: .15rem; }
-  .navlinks a {
-    color: var(--muted); text-decoration: none; font-size: .875rem;
-    padding: .5rem .75rem; border-radius: .5rem;
-  }
-  .navlinks a:hover { color: var(--fg); }
-  .hero { display: grid; gap: 2.5rem; padding: 3.5rem 0 4rem; }
-  @media (min-width: 960px) {
-    .hero { grid-template-columns: 1.15fr .85fr; align-items: stretch; }
-  }
-  .eyebrow {
-    color: var(--muted); font-size: .75rem; font-weight: 500;
-    letter-spacing: .18em; text-transform: uppercase;
-  }
-  h1 {
-    font-family: var(--display);
-    font-size: clamp(2.25rem, 5vw, 3.75rem);
-    line-height: 1.08; margin: 1.1rem 0 0;
-  }
-  .lede { color: var(--muted); font-size: clamp(1rem, 2vw, 1.125rem); max-width: 38rem; margin-top: 1.4rem; }
-  .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
-  .btn {
-    display: inline-flex; align-items: center; gap: .5rem;
-    height: 2.75rem; padding: 0 1rem; border-radius: .5rem;
-    font-size: .875rem; font-weight: 500; text-decoration: none; border: 0;
-  }
-  .btn.primary { background: var(--primary); color: var(--primary-fg); }
-  .btn.ghost { background: transparent; color: var(--fg); box-shadow: var(--shadow); }
-  .btn:hover { opacity: .92; }
-  .fabric {
-    position: relative; min-height: 16rem; border-radius: 1rem;
-    background: var(--card); box-shadow: var(--shadow); overflow: hidden;
-  }
-  .fabric svg { width: 100%; height: 100%; min-height: 16rem; padding: 1rem; }
-  .fabric .cap {
-    position: absolute; inset: auto 1rem 1rem 1rem;
-    display: flex; justify-content: space-between; pointer-events: none;
-  }
-  .fabric .cap span {
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-    color: var(--muted); font-size: 11px; letter-spacing: .08em;
-    text-transform: uppercase; padding: .2rem .45rem; border-radius: .25rem;
-  }
-  .stats {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-    background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-  }
-  @media (min-width: 720px) { .stats { grid-template-columns: repeat(5, 1fr); } }
-  .stats div { background: var(--bg); padding: 1.6rem 1.25rem; }
-  .stats b { display: block; font-size: 1.75rem; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1; }
-  .stats span { display: block; margin-top: .4rem; color: var(--muted); font-size: .75rem; }
-  section.block { padding: 4rem 0; }
-  .sec-h { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; justify-content: space-between; }
-  h2 { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2rem); margin: 0; }
-  .sub { color: var(--muted); font-size: .875rem; max-width: 32rem; margin: .5rem 0 0; }
-  .filters { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.25rem 0 1.5rem; }
-  .filters button, .search {
-    height: 2.75rem; border-radius: 999px; border: 0; font-family: inherit;
-    font-size: .875rem; padding: 0 1rem; background: #18181c; color: var(--muted);
-  }
-  .filters button[aria-pressed="true"] { background: var(--primary); color: var(--primary-fg); }
-  .search { border-radius: .5rem; min-width: 12rem; color: var(--fg); box-shadow: var(--shadow); background: var(--card); }
-  .grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-  @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 960px) { .grid.three { grid-template-columns: 1fr 1fr 1fr; } }
-  .card {
-    display: flex; flex-direction: column; gap: .65rem;
-    background: var(--card); color: inherit; text-decoration: none;
-    border-radius: 1rem; padding: 1.25rem; box-shadow: var(--shadow);
-    min-height: 12rem; transition: box-shadow .2s ease, transform .2s ease;
-  }
-  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-h); }
-  .card h3 { font-family: var(--display); font-size: 1.25rem; margin: 0; }
-  .card p { margin: 0; color: var(--muted); font-size: .875rem; flex: 1; }
-  .chip {
-    display: inline-block; font-size: .7rem; color: var(--muted);
-    box-shadow: var(--shadow); border-radius: 999px; padding: .15rem .55rem;
-    letter-spacing: .04em;
-  }
-  .tags { display: flex; flex-wrap: wrap; gap: .35rem; }
-  .tag {
-    font-size: .7rem; color: var(--muted); background: #18181c;
-    border-radius: .25rem; padding: .15rem .45rem;
-  }
-  .principles { display: grid; gap: 2rem; }
-  @media (min-width: 640px) { .principles { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 960px) { .principles { grid-template-columns: 1fr 1fr 1fr; } }
-  .principles article .n { color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
-  .principles h3 { font-family: var(--display); font-size: 1.2rem; margin: .6rem 0 .4rem; }
-  .principles p { margin: 0; color: var(--muted); font-size: .875rem; }
-  .stack { display: grid; gap: 2rem; }
-  @media (min-width: 640px) { .stack { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 960px) { .stack { grid-template-columns: repeat(4, 1fr); } }
-  .stack h3 { margin: 0 0 .75rem; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-  .stack ul { margin: 0; padding: 0; list-style: none; }
-  .stack li { font-size: .875rem; padding: .15rem 0; }
-  .about { display: grid; gap: 2.5rem; }
-  @media (min-width: 960px) { .about { grid-template-columns: 1.2fr .8fr; } }
-  .about p { color: var(--muted); }
-  .aside {
-    background: var(--card); border-radius: 1rem; padding: 1.5rem; box-shadow: var(--shadow); height: fit-content;
-  }
-  .aside h3 { margin: 0 0 1rem; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-  .aside a { display: block; font-size: .875rem; text-decoration: none; padding: .35rem 0; }
-  .aside a:hover { text-decoration: underline; }
-  footer { border-top: 1px solid var(--border); padding: 2.5rem 0 3.5rem; color: var(--subtle); font-size: .85rem; }
-  .foot { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: end; }
-  footer nav { display: flex; flex-wrap: wrap; gap: 1.1rem; }
-  footer a { color: var(--muted); text-decoration: none; }
-  footer a:hover { color: var(--fg); }
-  .empty { color: var(--muted); font-size: .875rem; }
-  .card[hidden], .empty[hidden] { display: none; }
-  @media (max-width: 720px) {
-    .navlinks a.desk { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .card { transition: none; }
-  }
+:root{--bg-0:#090d18;--bg-1:#0b1020;--bg-2:#131a2e;--ink:#e8eef7;--ink-dim:#9aa7bd;--ink-faint:#66738c;--teal:#2dd4bf;--teal-bright:#5eead4;--emerald:#34d399;--amber:#fbbf24;--violet:#a78bfa;--border:rgba(148,163,184,.16);--glass:rgba(255,255,255,.04);--radius:16px;--shadow:0 10px 40px -12px rgba(0,0,0,.7);--grad-head:linear-gradient(100deg,#5eead4 0%,#34d399 45%,#fbbf24 100%);--font:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--nav-h:56px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px);-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:var(--font);color:var(--ink);line-height:1.65;overflow-x:hidden;background:radial-gradient(1100px 600px at 78% -8%,rgba(45,212,191,.13),transparent 60%),radial-gradient(900px 520px at 12% 8%,rgba(251,191,36,.09),transparent 55%),radial-gradient(800px 700px at 50% 120%,rgba(167,139,250,.08),transparent 60%),linear-gradient(170deg,var(--bg-1),var(--bg-2) 55%,var(--bg-0));background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(148,163,184,.07) 1px,transparent 1px);background-size:34px 34px;mask-image:radial-gradient(circle at 50% 30%,#000 0%,transparent 78%);-webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0%,transparent 78%)}
+a{color:var(--teal-bright);text-decoration:none}a:hover{color:var(--teal)}
+:focus-visible{outline:2px solid var(--teal-bright);outline-offset:3px;border-radius:6px}
+h1,h2,h3{text-wrap:balance}p{text-wrap:pretty}
+button:not(:disabled),[role=button]:not(:disabled){cursor:pointer}
+.skip{position:absolute;left:-999px;top:0;z-index:200;background:var(--teal);color:#04201c;font-weight:700;padding:10px 16px;border-radius:10px}
+.skip:focus-visible{left:12px;top:12px}
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:120;background:linear-gradient(90deg,var(--teal),var(--emerald) 55%,var(--amber));transform:scaleX(0);transform-origin:0 50%;box-shadow:0 0 12px rgba(45,212,191,.6)}
+header.site{position:sticky;top:0;z-index:100;height:var(--nav-h);backdrop-filter:blur(14px);background:rgba(9,13,24,.72);border-bottom:1px solid var(--border)}
+nav.bar{max-width:1180px;margin:0 auto;height:100%;display:flex;align-items:center;gap:14px;padding:0 20px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.14em;font-size:.95rem;color:var(--ink)}
+.brand .dot{width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--teal-bright),var(--teal));box-shadow:0 0 12px var(--teal);animation:pulseDot 2.6s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:.6;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+.nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav-links a{color:var(--ink-dim);font-size:.86rem;font-weight:500;padding:7px 11px;border-radius:9px}
+.nav-links a:hover,.nav-links a.active{color:var(--teal-bright);background:var(--glass)}
+.nav-cta{margin-left:6px;padding:7px 14px;border-radius:10px;font-size:.84rem;font-weight:700;color:#04201c;background:linear-gradient(120deg,var(--teal-bright),var(--emerald));box-shadow:0 0 18px rgba(45,212,191,.35)}
+.nav-cta:hover{color:#04201c}
+.menu-toggle{display:none;margin-left:auto;background:var(--glass);border:1px solid var(--border);color:var(--ink);border-radius:9px;min-width:44px;min-height:44px}
+main{position:relative;z-index:1}
+section{max-width:1180px;margin:0 auto;padding:80px 20px 24px}
+.eyebrow{display:inline-flex;font-size:.74rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);padding:5px 12px;border-radius:999px;border:1px solid rgba(45,212,191,.3);background:rgba(45,212,191,.07)}
+h2.section-title{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.15;margin:18px 0 10px;font-weight:800;background:var(--grad-head);-webkit-background-clip:text;background-clip:text;color:transparent}
+.section-lead{max-width:760px;color:var(--ink-dim);margin:0 0 30px}
+.glass{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(12px);box-shadow:var(--shadow)}
+.hero-art{border-radius:22px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow),0 0 80px -30px rgba(45,212,191,.5);background:#0b1220}
+.hero-art svg{display:block;width:100%;height:auto}
+.hero-copy{text-align:center;margin:38px auto 0;max-width:840px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:22px}
+.pill{font-size:.76rem;font-weight:600;padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:var(--glass);color:var(--ink-dim)}
+h1.hero-title{font-size:clamp(2.6rem,8vw,5rem);line-height:.98;margin:4px 0 14px;font-weight:900;background:var(--grad-head);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-tagline{font-size:clamp(1.05rem,2.6vw,1.32rem);color:var(--ink);font-weight:600;margin:0 auto 8px;max-width:720px}
+.hero-sub{color:var(--ink-dim);margin:0 auto 28px;max-width:680px}
+.stat-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:6px auto 30px}
+.stat-chip{min-width:116px;padding:16px 20px;border-radius:14px;background:var(--glass);border:1px solid var(--border);transition:transform .25s ease,border-color .25s ease}
+.stat-chip:hover{transform:translateY(-4px);border-color:rgba(45,212,191,.4)}
+.stat-chip .num{font-size:1.7rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;background:linear-gradient(120deg,var(--teal-bright),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-chip .lbl{display:block;margin-top:6px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.btn{display:inline-flex;align-items:center;padding:13px 24px;border-radius:12px;font-weight:700;border:1px solid transparent;min-height:44px}
+.btn-primary{color:#04201c;background:linear-gradient(120deg,var(--teal-bright),var(--emerald));box-shadow:0 0 26px -6px rgba(45,212,191,.6)}
+.btn-primary:hover{color:#04201c;filter:brightness(1.07)}
+.btn-ghost{color:var(--ink);background:var(--glass);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--teal);color:var(--ink)}
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.25rem 0 1.5rem;align-items:center}
+.filters button{height:44px;border-radius:999px;border:0;font-family:inherit;font-size:.875rem;padding:0 1rem;background:#181e32;color:var(--ink-dim)}
+.filters button[aria-pressed=true]{background:var(--teal);color:#04201c;font-weight:700}
+.search{height:44px;border-radius:12px;border:0;min-width:12rem;padding:0 1rem;color:var(--ink);background:var(--glass);box-shadow:0 0 0 1px var(--border);font-family:inherit}
+.grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:960px){.grid.three{grid-template-columns:1fr 1fr 1fr}}
+.card{display:flex;flex-direction:column;gap:.65rem;color:inherit;text-decoration:none;border-radius:16px;padding:1.25rem;min-height:12rem;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-4px);border-color:rgba(45,212,191,.42);box-shadow:var(--shadow),0 0 32px -10px rgba(45,212,191,.45);color:inherit}
+.card h3{font-family:var(--mono);font-size:1.1rem;margin:0;color:var(--teal-bright)}
+.card p{margin:0;color:var(--ink-dim);font-size:.875rem;flex:1}
+.chip{display:inline-block;font-size:.7rem;color:var(--teal);border:1px solid rgba(45,212,191,.3);background:rgba(45,212,191,.08);border-radius:999px;padding:.15rem .55rem;width:fit-content}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tag{font-size:.7rem;color:var(--ink-dim);background:#181e32;font-family:var(--mono);border-radius:.25rem;padding:.15rem .45rem}
+.diagrams{display:grid;gap:22px}
+@media(min-width:960px){.diagrams{grid-template-columns:1fr 1fr}}
+.diagram-block{padding:16px;overflow:hidden}
+.diagram-title{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:1.06rem;font-weight:700}
+.diagram-title .tag{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);padding:3px 9px;border-radius:999px;border:1px solid rgba(45,212,191,.3);background:rgba(45,212,191,.07)}
+.diagram-desc{color:var(--ink-dim);font-size:.94rem;margin:0 0 12px}
+.diagram-block svg{width:100%;height:auto;display:block}
+.flow-steps{display:grid;gap:12px;margin-top:22px}
+@media(min-width:720px){.flow-steps{grid-template-columns:1fr 1fr}}
+.flow-step{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 18px}
+.flow-step .idx{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;font-weight:800;color:#04201c;background:linear-gradient(135deg,var(--teal-bright),var(--emerald))}
+.flow-step p{margin:0;color:var(--ink-dim);font-size:.96rem;padding-top:4px}
+.principles{display:grid;gap:1rem;margin-top:2rem}
+@media(min-width:640px){.principles{grid-template-columns:1fr 1fr}}
+@media(min-width:960px){.principles{grid-template-columns:1fr 1fr 1fr}}
+.principles article{padding:1.5rem;transition:transform .25s ease,border-color .25s ease}
+.principles article:hover{transform:translateY(-4px);border-color:rgba(45,212,191,.42)}
+.principles .n{font-family:var(--mono);font-size:.75rem;color:var(--teal)}
+.principles h3{margin:.6rem 0 .4rem;font-size:1.15rem}
+.principles p{margin:0;color:var(--ink-dim);font-size:.875rem}
+.stack{display:grid;gap:2rem;margin-top:2rem}
+@media(min-width:640px){.stack{grid-template-columns:1fr 1fr}}
+@media(min-width:960px){.stack{grid-template-columns:repeat(4,1fr)}}
+.stack h3{margin:0 0 .75rem;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px}
+.tech-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:11px;background:var(--glass);border:1px solid var(--border);font-size:.9rem;color:var(--ink-dim)}
+.tech-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal)}
+.about{display:grid;gap:2.5rem;margin-top:1.5rem}
+@media(min-width:960px){.about{grid-template-columns:1.2fr .8fr}}
+.about p{color:var(--ink-dim)}
+.aside{padding:1.5rem;height:fit-content}
+.aside h3{margin:0 0 1rem;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+.aside a{display:block;font-size:.875rem;padding:.4rem 0;color:var(--ink-dim)}
+.aside a:hover{color:var(--teal-bright)}
+footer.site{position:relative;z-index:1;border-top:1px solid var(--border);margin-top:60px;padding:44px 20px 56px;background:rgba(9,13,24,.5)}
+.footer-inner{max-width:1180px;margin:0 auto;display:grid;gap:22px}
+@media(min-width:720px){.footer-inner{grid-template-columns:1.5fr 1fr 1fr}}
+.footer-inner h4{color:var(--teal);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;margin:0 0 12px}
+.footer-inner a{display:block;color:var(--ink-dim);font-size:.92rem;padding:4px 0}
+.footer-brand{font-weight:800;letter-spacing:.12em;font-size:1.2rem;color:var(--ink);margin:0 0 8px}
+.footer-desc{color:var(--ink-dim);margin:0;font-size:.94rem;max-width:340px}
+.footer-note{max-width:1180px;margin:28px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--ink-faint);font-size:.82rem}
+.to-top{position:fixed;right:22px;bottom:22px;z-index:90;width:46px;height:46px;border-radius:13px;cursor:pointer;display:grid;place-items:center;color:#04201c;font-size:1.2rem;font-weight:800;background:linear-gradient(135deg,var(--teal-bright),var(--emerald));border:none;opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .3s,transform .3s}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+.empty{color:var(--ink-dim);font-size:.875rem}
+.card[hidden],.empty[hidden]{display:none}
+@media(max-width:720px){.nav-links{display:none;position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;padding:12px;background:rgba(9,13,24,.97);border-bottom:1px solid var(--border)}.nav-links.open{display:flex}.nav-cta{display:none}.menu-toggle{display:inline-block}section{padding-top:60px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 <a class="skip" href="#work">Skip to content</a>
-<header>
-  <div class="wrap nav">
-    <a class="brand" href="#top">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#e4e4e7"/><circle cx="8" cy="22" r="2.2" fill="#09090b"/><circle cx="16" cy="10" r="2.2" fill="#09090b"/><circle cx="24" cy="22" r="2.2" fill="#09090b"/><path d="M8 22 L16 10 L24 22" stroke="#09090b" stroke-width="1.6" fill="none"/></svg>
-      GESH Lab
-    </a>
-    <nav class="navlinks">
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="site">
+  <nav class="bar" aria-label="Primary">
+    <a href="#top" class="brand"><span class="dot" aria-hidden="true"></span>GESH</a>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+    <div class="nav-links" id="navLinks">
       <a href="#work">Work</a>
+      <a href="#architecture">Architecture</a>
       <a href="#principles">Principles</a>
-      <a class="desk" href="#about">About</a>
-      <a href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub</a>
-    </nav>
-  </div>
+      <a href="#stack">Stack</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/gesh75" class="nav-cta" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </nav>
 </header>
-
 <main id="top">
-  <div class="wrap hero">
+<section id="hero" aria-label="Introduction">
+  <div class="hero-art reveal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-labelledby="geshTitle geshDesc" fill="none">
+<title id="geshTitle">GESH Lab — closed-loop AI for NetOps architecture</title>
+<desc id="geshDesc">Telemetry is sanitized before an LLM decides, a fail-closed guardrail gates writes against a 26-device digital twin, RFC 6241 confirmed-commit applies the change, and only a sealed HMAC evidence badge ever leaves the perimeter.</desc>
+<defs>
+<linearGradient id="gBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset=".55" stop-color="#0d1526"/><stop offset="1" stop-color="#111a2b"/></linearGradient>
+<linearGradient id="gTitle" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5eead4"/><stop offset=".5" stop-color="#34d399"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+<linearGradient id="gCurrent" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2dd4bf" stop-opacity="0"/><stop offset=".5" stop-color="#2dd4bf" stop-opacity=".9"/><stop offset="1" stop-color="#10b981" stop-opacity="0"/></linearGradient>
+<radialGradient id="twinGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".32"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>
+<radialGradient id="sealFill" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#f6c453"/><stop offset=".6" stop-color="#f59e0b"/><stop offset="1" stop-color="#d4a017"/></radialGradient>
+<filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<style>@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}@keyframes breathe{0%,100%{opacity:.18}50%{opacity:.42}}@keyframes dashflow{to{stroke-dashoffset:-24}}@keyframes sealdrop{0%,18%{transform:translateY(-18px);opacity:0}30%{transform:translateY(0);opacity:1}46%,100%{transform:translateY(0)}}.pulse{animation:pulse 2.8s ease-in-out infinite}.breathe{animation:breathe 3.4s ease-in-out infinite}.dash{stroke-dasharray:6 8;animation:dashflow 1.8s linear infinite}.seal{transform-box:fill-box;transform-origin:center;animation:sealdrop 6s ease-in-out infinite}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+</defs>
+<rect width="1200" height="380" fill="url(#gBg)"/>
+<rect class="dash" x="26" y="22" width="1148" height="336" rx="20" stroke="#5b6b82" stroke-width="1.6"/>
+<g transform="translate(44,40)"><rect x="0" y="-14" width="148" height="20" rx="10" fill="#111a2b" stroke="#5b6b82"/><circle class="pulse" cx="13" cy="-4" r="3.2" fill="#2dd4bf"/><text x="26" y="-1" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" letter-spacing=".6" fill="#c9d3e0">FAIL-CLOSED PERIMETER</text></g>
+<text x="600" y="78" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="46" font-weight="800" letter-spacing="3" fill="url(#gTitle)">GESH LAB</text>
+<path d="M470 94 H730" stroke="#2dd4bf" stroke-width="2.4" stroke-linecap="round"/>
+<text x="600" y="118" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="600" fill="#c9d3e0">The loop, closed. — observe · sanitize · decide · twin · guard · commit</text>
+<path id="spine" d="M110 228 H1090" stroke="url(#gCurrent)" stroke-width="3" opacity=".85"/>
+<g filter="url(#glow)">
+<circle r="3.5" fill="#5eead4"><animateMotion dur="3.6s" repeatCount="indefinite"><mpath href="#spine"/></animateMotion></circle>
+<circle r="3" fill="#34d399"><animateMotion dur="3.6s" begin="1.1s" repeatCount="indefinite"><mpath href="#spine"/></animateMotion></circle>
+<circle r="2.6" fill="#2dd4bf"><animateMotion dur="3.6s" begin="2.2s" repeatCount="indefinite"><mpath href="#spine"/></animateMotion></circle>
+</g>
+<g class="pulse"><rect x="90" y="192" width="88" height="72" rx="10" fill="#111a2b" stroke="#2dd4bf" stroke-width="1.5"/><rect x="104" y="208" width="60" height="4" rx="2" fill="#5eead4"/><rect x="104" y="220" width="44" height="3" rx="1.5" fill="#3a6c7e"/><rect x="104" y="230" width="52" height="3" rx="1.5" fill="#3a6c7e"/></g>
+<text x="134" y="280" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" fill="#2dd4bf">observe</text>
+<text x="134" y="294" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5b6b82">syslog · telemetry</text>
+<rect x="210" y="192" width="88" height="72" rx="10" fill="#111a2b" stroke="#34d399" stroke-width="1.5"/>
+<text x="254" y="236" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#6ee7b7">PII∅</text>
+<text x="254" y="280" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" fill="#34d399">sanitize</text>
+<text x="254" y="294" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5b6b82">never raw to LLM</text>
+<rect x="330" y="192" width="88" height="72" rx="10" fill="#111a2b" stroke="#a78bfa" stroke-width="1.5"/>
+<text x="374" y="236" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#ddd6fe">LLM</text>
+<text x="374" y="280" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">decide</text>
+<text x="374" y="294" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5b6b82">Pydantic-AI · MCP</text>
+<g transform="translate(530,228)"><circle class="breathe" r="70" fill="url(#twinGlow)"/><circle class="dash" r="56" fill="none" stroke="#2dd4bf" stroke-width="1.3"/>
+<circle cx="0" cy="-36" r="7" fill="#0e2336" stroke="#34d399" stroke-width="1.5"/><circle cx="34" cy="-12" r="7" fill="#0e2336" stroke="#34d399" stroke-width="1.5"/><circle cx="21" cy="30" r="7" fill="#0e2336" stroke="#34d399" stroke-width="1.5"/><circle cx="-21" cy="30" r="7" fill="#0e2336" stroke="#34d399" stroke-width="1.5"/><circle cx="-34" cy="-12" r="7" fill="#0e2336" stroke="#34d399" stroke-width="1.5"/>
+<path class="dash" d="M0 -36 L34 -12 L21 30 L-21 30 L-34 -12 Z" stroke="#10b981" stroke-width="1.4"/></g>
+<text x="530" y="318" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" fill="#34d399">26-device twin</text>
+<text x="530" y="332" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5b6b82">Juniper · Arista · Nokia · FRR</text>
+<rect x="650" y="192" width="86" height="72" rx="10" fill="#111a2b" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="693" y="236" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#fde68a">G1–G7</text>
+<text x="693" y="280" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" fill="#f59e0b">guard</text>
+<text x="693" y="294" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5b6b82">aegis · argus</text>
+<rect x="770" y="192" width="96" height="72" rx="10" fill="#111a2b" stroke="#2dd4bf" stroke-width="1.5"/>
+<text x="818" y="236" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#99f6e4">confirm</text>
+<text x="818" y="280" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" fill="#2dd4bf">commit</text>
+<text x="818" y="294" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5b6b82">RFC 6241 rollback</text>
+<g transform="translate(980,228)">
+<path d="M0 -50 L42 -34 L42 20 Q42 48 0 60 Q-42 48 -42 20 L-42 -34 Z" fill="#0f1d22" stroke="#10b981" stroke-width="1.8"/>
+<rect x="-30" y="-22" width="60" height="14" rx="4" fill="#13322a" stroke="#10b981"/><text x="0" y="-12" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="8" font-weight="700" fill="#6ee7b7">HMAC · GAIT</text>
+<rect x="-30" y="-4" width="60" height="14" rx="4" fill="#13322a" stroke="#10b981"/><text x="0" y="6" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="8" font-weight="700" fill="#6ee7b7">PCI · SOC2</text>
+<g class="seal"><circle r="18" cy="40" fill="url(#sealFill)" stroke="#b8860b" stroke-width="1.5"/><text x="0" y="37" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" font-weight="700" fill="#3a2c08">sha256</text><text x="0" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" fill="#3a2c08">egress:none</text></g>
+</g>
+<text x="980" y="318" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10.5" font-weight="700" fill="#f59e0b">sealed evidence</text>
+<text x="980" y="332" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5b6b82">only the badge leaves</text>
+</svg>
+</div>
+  <div class="hero-copy">
+    <div class="hero-badges reveal"><span class="pill">Network automation</span><span class="pill">AI for NetOps</span><span class="pill">fail-closed</span><span class="pill">egress none</span></div>
+    <h1 class="hero-title">The loop, closed.</h1>
+    <p class="hero-tagline reveal">Georgi Gaydarov builds AI-native network operations tooling — labs that remediate, changes that never leave the wall, and a 70,000-command CLI that actually compares vendors.</p>
+    <p class="hero-sub reveal">Nine public labs. Docs first. Fail-closed by default. Agents observe, a twin verifies, a human owns the blast radius.</p>
+    <div class="stat-row" role="list" aria-label="Lab statistics">
+      <div class="stat-chip reveal" role="listitem"><span class="num" data-count="20" data-suffix="+">0</span><span class="lbl">years on the wire</span></div>
+      <div class="stat-chip reveal" role="listitem"><span class="num" data-count="9">0</span><span class="lbl">public labs & tools</span></div>
+      <div class="stat-chip reveal" role="listitem"><span class="num" data-count="70" data-suffix="k+">0</span><span class="lbl">CLI commands indexed</span></div>
+      <div class="stat-chip reveal" role="listitem"><span class="num" data-count="26">0</span><span class="lbl">devices in the AI lab</span></div>
+      <div class="stat-chip reveal" role="listitem"><span class="num" data-count="17">0</span><span class="lbl">vendors compared</span></div>
+    </div>
+    <div class="cta-row reveal">
+      <a class="btn btn-primary" href="#work">Browse the lab</a>
+      <a class="btn btn-ghost" href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub profile</a>
+    </div>
+  </div>
+</section>
+<section id="work">
+  <span class="eyebrow reveal">Work</span>
+  <h2 class="section-title reveal">Nine public labs and tools</h2>
+  <p class="section-lead reveal">Docs first. Fail-closed by default. Every project is meant to be cloned.</p>
+  <div class="filters" role="tablist" aria-label="Project domain">
+    <button type="button" data-domain="all" aria-pressed="true">All</button>
+    <button type="button" data-domain="closed-loop">Closed-loop</button>
+    <button type="button" data-domain="security">Security</button>
+    <button type="button" data-domain="reference">Reference</button>
+    <button type="button" data-domain="llm">LLM tooling</button>
+    <input class="search" id="q" type="search" placeholder="Filter by name, vendor, or tag" aria-label="Filter projects">
+  </div>
+  <div class="grid three" id="grid"><a class="card glass" data-domain="security" data-hay="argus agentic ai penetration tester guardrail hmac signer evidence graph active directory supervised v1" href="https://gesh75.github.io/argus/"><span class="chip">Security</span><h3>argus</h3><p>Fail-closed defensive assessment orchestrator. Supervised V1 release candidate; experimental V2 with an out-of-band HMAC signer and operator-gated evidence graph. Isolated lab only — unattended mode stays locked.</p><div class="tags"><span class="tag">7-layer guardrail</span><span class="tag">OOB HMAC signer</span><span class="tag">supervised V1</span></div></a>
+<a class="card glass" data-domain="security" data-hay="aegis air-gapped digital twin batfish pci soc2 nist ed25519 containerlab v0.2.0" href="https://gesh75.github.io/aegis/"><span class="chip">Security</span><h3>aegis</h3><p>Air-gapped pre-deployment network change validation against a real containerlab digital twin. v0.2.0: 11 frameworks, bounded autonomy, detached Ed25519 seals. Zero egress.</p><div class="tags"><span class="tag">v0.2.0</span><span class="tag">Ed25519 seal</span><span class="tag">11 frameworks</span></div></a>
+<a class="card glass" data-domain="closed-loop" data-hay="multivendor-ai-network-lab pydantic-ai 26 devices mcp juniper arista nokia frr remediation phase 6 portal" href="https://gesh75.github.io/multivendor-ai-network-lab/portal.html"><span class="chip">Closed-loop</span><h3>multivendor-ai-network-lab</h3><p>26-device lab that closes the loop — anomalies auto-remediate, risk-gated, with RFC 6241 confirmed-commit rollback. Interactive Lab Ops portal, Pydantic-AI orchestrator, 69 MCP tools. Phase 6.</p><div class="tags"><span class="tag">26 devices</span><span class="tag">69 MCP tools</span><span class="tag">Phase 6</span></div></a>
+<a class="card glass" data-domain="closed-loop" data-hay="napalm-live-lab arista nokia frr containerlab commands coverage" href="https://gesh75.github.io/napalm-live-lab/"><span class="chip">Closed-loop</span><h3>napalm-live-lab</h3><p>Honest, live multivendor NAPALM coverage — Arista cEOS, Nokia SR Linux and FRR — plus a safe-by-default console of 2,361 curated commands.</p><div class="tags"><span class="tag">NAPALM</span><span class="tag">2,361 commands</span><span class="tag">read-only guard</span></div></a>
+<a class="card glass" data-domain="closed-loop" data-hay="netlog-ai syslog junos eos frr sanitize llm root-cause" href="https://gesh75.github.io/netlog-ai/"><span class="chip">Closed-loop</span><h3>netlog-ai</h3><p>Sanitize-first AI log analyzer that turns raw syslog and CLI into prioritized, copy-pastable root-cause playbooks. Local model or Claude. 139 tests.</p><div class="tags"><span class="tag">sanitize-first</span><span class="tag">LLM RCA</span><span class="tag">139 tests</span></div></a>
+<a class="card glass" data-domain="reference" data-hay="multivendor-cli-configurator 70000 cisco juniper arista nokia fortinet palo alto netconf ansible studio intent migrate recipes gnmi" href="https://gesh75.github.io/multivendor-cli-configurator/"><span class="chip">Reference</span><h3>multivendor-cli-configurator</h3><p>70,000+ CLI commands across 17 vendors — searchable, concept-aligned N-vendor compare, NETCONF / Ansible drawers. CLI Studio adds intent, migrate, recipes, EOS/FRR/VyOS parsers, and a 10-node FRR lab map.</p><div class="tags"><span class="tag">70k commands</span><span class="tag">CLI Studio</span><span class="tag">zero-dep</span></div></a>
+<a class="card glass" data-domain="reference" data-hay="network-observability-architecture netbox source of truth telemetry dual-signal alerts otlp alloy tempo gnmi freshness v2 console" href="https://gesh75.github.io/network-observability-architecture/"><span class="chip">Reference</span><h3>network-observability-architecture</h3><p>v2.0 interactive console: OTLP/Alloy, Tempo, gNMI, freshness SLOs, dual-signal lab, and a read-only AI control plane. Discovery never writes NetBox.</p><div class="tags"><span class="tag">v2.0</span><span class="tag">OTLP</span><span class="tag">NetBox</span><span class="tag">dual-signal</span></div></a>
+<a class="card glass" data-domain="llm" data-hay="claude-mastery-hub claude code mcp skills subagents hooks" href="https://gesh75.github.io/claude-mastery-hub/"><span class="chip">LLM tooling</span><h3>claude-mastery-hub</h3><p>Interactive single-page guide to mastering Claude — the app, Claude Code, the API, MCP, skills, subagents, and hooks. Zero-dependency reference.</p><div class="tags"><span class="tag">Claude Code</span><span class="tag">MCP</span><span class="tag">skills</span></div></a>
+<a class="card glass" data-domain="llm" data-hay="claude-skill-lint linter frontmatter progressive disclosure" href="https://github.com/gesh75/claude-skill-lint"><span class="chip">LLM tooling</span><h3>claude-skill-lint</h3><p>Zero-dependency linter for Claude Code skills — frontmatter, description length, progressive disclosure, dead references, stale model IDs.</p><div class="tags"><span class="tag">linter</span><span class="tag">CLI</span><span class="tag">zero-dep</span></div></a></div>
+  <p class="empty" id="empty" hidden>No projects match that filter.</p>
+</section>
+<section id="architecture">
+  <span class="eyebrow reveal">Architecture</span>
+  <h2 class="section-title reveal">Inside the perimeter</h2>
+  <p class="section-lead reveal">Everything public here is a closed loop: observe, sanitize, decide, verify against a twin, then write only with a human on the blast radius. Nothing leaves the wall but evidence.</p>
+  <div class="diagrams">
+    <figure class="diagram-block glass reveal">
+      <div class="diagram-title">Closed-loop cycle <span class="tag">live</span></div>
+      <p class="diagram-desc">Packets ride the ring. The LLM never sees raw syslog. Writes never skip the guard.</p>
+      <svg viewBox="0 0 840 460" role="img" aria-label="Closed-loop control cycle" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="loopGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#fbbf24"/></linearGradient></defs>
+<circle id="loopPath" cx="420" cy="220" r="138" fill="none" stroke="#2dd4bf" stroke-opacity=".28" stroke-width="2"/>
+<circle cx="420" cy="220" r="138" fill="none" stroke="url(#loopGrad)" stroke-width="2.4" stroke-dasharray="18 220"><animateTransform attributeName="transform" type="rotate" from="0 420 220" to="360 420 220" dur="28s" repeatCount="indefinite"/></circle>
+<circle r="5" fill="#5eead4"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#loopPath"/></animateMotion></circle>
+<circle r="3.4" fill="#fbbf24"><animateMotion dur="7s" begin="3.5s" repeatCount="indefinite"><mpath href="#loopPath"/></animateMotion></circle>
+<circle cx="420" cy="220" r="58" fill="#0b1220" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="420" y="214" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="800" fill="#5eead4">GESH</text>
+<text x="420" y="234" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#9aa7bd">loop closed</text>
+<g transform="translate(420,82)"><circle r="28" fill="#111a2b" stroke="#2dd4bf" stroke-width="1.6"/><circle r="4" fill="#2dd4bf"/><text y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#2dd4bf">Observe</text><text y="60" text-anchor="middle" font-size="9" fill="#66738c">netlog · telemetry</text></g>
+<g transform="translate(539.5,151)"><circle r="28" fill="#111a2b" stroke="#34d399" stroke-width="1.6"/><circle r="4" fill="#34d399"/><text y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#34d399">Sanitize</text><text y="60" text-anchor="middle" font-size="9" fill="#66738c">no raw syslog</text></g>
+<g transform="translate(539.5,289)"><circle r="28" fill="#111a2b" stroke="#a78bfa" stroke-width="1.6"/><circle r="4" fill="#a78bfa"/><text y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#a78bfa">Decide</text><text y="60" text-anchor="middle" font-size="9" fill="#66738c">Pydantic-AI</text></g>
+<g transform="translate(420,358)"><circle r="28" fill="#111a2b" stroke="#5eead4" stroke-width="1.6"/><circle r="4" fill="#5eead4"/><text y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#5eead4">Commit</text><text y="60" text-anchor="middle" font-size="9" fill="#66738c">RFC 6241</text></g>
+<g transform="translate(300.5,289)"><circle r="28" fill="#111a2b" stroke="#34d399" stroke-width="1.6"/><circle r="4" fill="#34d399"/><text y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#34d399">Twin</text><text y="60" text-anchor="middle" font-size="9" fill="#66738c">26-device lab</text></g>
+<g transform="translate(300.5,151)"><circle r="28" fill="#111a2b" stroke="#fbbf24" stroke-width="1.6"/><circle r="4" fill="#fbbf24"/><text y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#fbbf24">Guard</text><text y="60" text-anchor="middle" font-size="9" fill="#66738c">aegis · argus</text></g>
+</svg>
+
+    </figure>
+    <figure class="diagram-block glass reveal">
+      <div class="diagram-title">System context <span class="tag">map</span></div>
+      <p class="diagram-desc">Nine labs as one control plane. Click a node to open its docs.</p>
+      <svg viewBox="0 0 720 380" role="img" aria-label="GESH Lab system context" xmlns="http://www.w3.org/2000/svg">
+<rect x="10" y="96" width="700" height="270" rx="16" fill="none" stroke="#2dd4bf" stroke-opacity=".35" stroke-dasharray="8 7"/>
+<text x="26" y="116" font-family="IBM Plex Sans,sans-serif" font-size="10" font-weight="700" fill="#2dd4bf" letter-spacing="1.2">AIR-GAPPED / FAIL-CLOSED</text>
+<line x1="100" y1="74" x2="220" y2="118" stroke="#5b6b82" stroke-width="1.2"/>
+<line x1="260" y1="74" x2="260" y2="118" stroke="#5b6b82" stroke-width="1.2"/>
+<line x1="420" y1="74" x2="300" y2="118" stroke="#5b6b82" stroke-width="1.2"/>
+<line x1="200" y1="174" x2="97" y2="214" stroke="#2dd4bf" stroke-opacity=".55" stroke-width="1.2"/>
+<line x1="260" y1="174" x2="276" y2="214" stroke="#34d399" stroke-opacity=".55" stroke-width="1.2"/>
+<line x1="320" y1="174" x2="450" y2="214" stroke="#fbbf24" stroke-opacity=".55" stroke-width="1.2"/>
+<line x1="360" y1="146" x2="619" y2="214" stroke="#a78bfa" stroke-opacity=".55" stroke-width="1.2"/>
+<a href="#work"><rect x="36" y="28" width="128" height="46" rx="10" fill="#111a2b" stroke="#94a3b8" stroke-width="1.4"/><text x="100" y="47" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">Operator</text><text x="100" y="62" text-anchor="middle" font-size="9" fill="#9aa7bd">intent</text></a>
+<a href="#principles"><rect x="196" y="28" width="128" height="46" rx="10" fill="#111a2b" stroke="#94a3b8" stroke-width="1.4"/><text x="260" y="47" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">Approver</text><text x="260" y="62" text-anchor="middle" font-size="9" fill="#9aa7bd">token</text></a>
+<a href="#architecture"><rect x="356" y="28" width="128" height="46" rx="10" fill="#111a2b" stroke="#94a3b8" stroke-width="1.4"/><text x="420" y="47" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">Auditor</text><text x="420" y="62" text-anchor="middle" font-size="9" fill="#9aa7bd">badge only</text></a>
+<a href="#work"><rect x="130" y="118" width="260" height="56" rx="10" fill="#111a2b" stroke="#2dd4bf" stroke-width="1.4"/><text x="260" y="142" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">GESH control plane</text><text x="260" y="158" text-anchor="middle" font-size="9" fill="#9aa7bd">fail-closed · sanitize-first</text></a>
+<a href="https://gesh75.github.io/netlog-ai/"><rect x="16" y="214" width="162" height="52" rx="10" fill="#111a2b" stroke="#2dd4bf" stroke-width="1.4"/><text x="97" y="236" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">netlog-ai</text><text x="97" y="252" text-anchor="middle" font-size="9" fill="#9aa7bd">observe</text></a>
+<a href="https://gesh75.github.io/multivendor-ai-network-lab/portal.html"><rect x="190" y="214" width="172" height="52" rx="10" fill="#111a2b" stroke="#34d399" stroke-width="1.4"/><text x="276" y="236" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">AI network lab</text><text x="276" y="252" text-anchor="middle" font-size="9" fill="#9aa7bd">26 devices · MCP</text></a>
+<a href="https://gesh75.github.io/aegis/"><rect x="374" y="214" width="152" height="52" rx="10" fill="#111a2b" stroke="#fbbf24" stroke-width="1.4"/><text x="450" y="236" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">aegis</text><text x="450" y="252" text-anchor="middle" font-size="9" fill="#9aa7bd">preflight twin</text></a>
+<a href="https://gesh75.github.io/argus/"><rect x="538" y="214" width="162" height="52" rx="10" fill="#111a2b" stroke="#a78bfa" stroke-width="1.4"/><text x="619" y="236" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">argus</text><text x="619" y="252" text-anchor="middle" font-size="9" fill="#9aa7bd">7-layer pentest</text></a>
+<a href="https://gesh75.github.io/multivendor-cli-configurator/"><rect x="16" y="300" width="162" height="52" rx="10" fill="#111a2b" stroke="#38bdf8" stroke-width="1.4"/><text x="97" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">CLI configurator</text><text x="97" y="338" text-anchor="middle" font-size="9" fill="#9aa7bd">70k · 17 vendors</text></a>
+<a href="https://gesh75.github.io/network-observability-architecture/"><rect x="190" y="300" width="172" height="52" rx="10" fill="#111a2b" stroke="#38bdf8" stroke-width="1.4"/><text x="276" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">observability</text><text x="276" y="338" text-anchor="middle" font-size="9" fill="#9aa7bd">NetBox · dual-signal</text></a>
+<a href="https://gesh75.github.io/napalm-live-lab/"><rect x="374" y="300" width="152" height="52" rx="10" fill="#111a2b" stroke="#34d399" stroke-width="1.4"/><text x="450" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">napalm lab</text><text x="450" y="338" text-anchor="middle" font-size="9" fill="#9aa7bd">honest coverage</text></a>
+<a href="https://gesh75.github.io/claude-mastery-hub/"><rect x="538" y="300" width="162" height="52" rx="10" fill="#111a2b" stroke="#a78bfa" stroke-width="1.4"/><text x="619" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#e8eef7" font-family="IBM Plex Sans,sans-serif">Claude hub</text><text x="619" y="338" text-anchor="middle" font-size="9" fill="#9aa7bd">skills · lint</text></a>
+</svg>
+
+    </figure>
+  </div>
+  <ol class="flow-steps">
+    <li class="flow-step glass reveal"><span class="idx">1</span><p>Operator submits intent or a sanitized running-config — never a credential, never raw syslog.</p></li>
+    <li class="flow-step glass reveal"><span class="idx">2</span><p>Sanitize-first: netlog-ai redacts before any model. The LLM sees a problem, not a secret.</p></li>
+    <li class="flow-step glass reveal"><span class="idx">3</span><p>Pydantic-AI + 69 MCP tools propose a change against the 26-device multivendor lab.</p></li>
+    <li class="flow-step glass reveal"><span class="idx">4</span><p>AEGIS preflights on a throwaway containerlab twin. ARGUS stays read-only behind 7 guardrail layers.</p></li>
+    <li class="flow-step glass reveal"><span class="idx">5</span><p>Risk gate: auto / approve / page-out. RFC 6241 confirmed-commit with rollback. A person owns blast radius.</p></li>
+    <li class="flow-step glass reveal"><span class="idx">6</span><p>Only a sealed HMAC / PCI / SOC2 / NIST evidence badge leaves. Egress: none.</p></li>
+  </ol>
+</section>
+<section id="principles">
+  <span class="eyebrow reveal">Principles</span>
+  <h2 class="section-title reveal">How the lab is built</h2>
+  <p class="section-lead reveal">And why the agents do not get a blank check.</p>
+  <div class="principles">
+    <article class="glass reveal"><div class="n">01</div><h3>Read-only by default</h3><p>Agents observe first. Writes are gated, confirmed, and reversible.</p></article>
+    <article class="glass reveal"><div class="n">02</div><h3>Sanitize before the model</h3><p>Raw syslog never meets an LLM. The model sees a problem, not a credential.</p></article>
+    <article class="glass reveal"><div class="n">03</div><h3>Fail closed</h3><p>A 7-layer guardrail. Risk gates of auto / approve / page-out. Unclear policy means nothing fires.</p></article>
+    <article class="glass reveal"><div class="n">04</div><h3>Evidence, not screenshots</h3><p>What leaves the wall is a sealed badge. HMAC-audited runs. Immutable GAIT.</p></article>
+    <article class="glass reveal"><div class="n">05</div><h3>Honest coverage</h3><p>Publish what actually works on Arista, Nokia SR Linux, and FRR — not a marketing matrix.</p></article>
+    <article class="glass reveal"><div class="n">06</div><h3>Human-approved change</h3><p>RFC 6241 confirmed-commit with rollback. Automation proposes; a person owns the blast radius.</p></article>
+  </div>
+</section>
+<section id="stack">
+  <span class="eyebrow reveal">Stack</span>
+  <h2 class="section-title reveal">Vendors, protocols, automation, AI</h2>
+  <p class="section-lead reveal">What actually runs in the labs — not a marketing matrix.</p>
+  <div class="stack">
+    <div><h3>Vendors</h3><div class="chip-grid"><span class="tech-chip">Juniper</span><span class="tech-chip">Arista</span><span class="tech-chip">Cisco</span><span class="tech-chip">Nokia</span><span class="tech-chip">Palo Alto</span><span class="tech-chip">Fortinet</span><span class="tech-chip">FRR</span><span class="tech-chip">VyOS</span><span class="tech-chip">SONiC</span></div></div>
+    <div><h3>Protocols</h3><div class="chip-grid"><span class="tech-chip">BGP</span><span class="tech-chip">MPLS</span><span class="tech-chip">EVPN</span><span class="tech-chip">SD-WAN</span><span class="tech-chip">SASE</span><span class="tech-chip">Zero Trust</span><span class="tech-chip">NETCONF</span></div></div>
+    <div><h3>Automation</h3><div class="chip-grid"><span class="tech-chip">Python</span><span class="tech-chip">Ansible</span><span class="tech-chip">Nornir</span><span class="tech-chip">NAPALM</span><span class="tech-chip">containerlab</span><span class="tech-chip">MCP</span></div></div>
+    <div><h3>AI</h3><div class="chip-grid"><span class="tech-chip">Claude</span><span class="tech-chip">Pydantic-AI</span><span class="tech-chip">on-prem LLMs</span><span class="tech-chip">Ollama</span><span class="tech-chip">sanitize-first</span></div></div>
+  </div>
+</section>
+<section id="about">
+  <span class="eyebrow reveal">About</span>
+  <h2 class="section-title reveal">Senior network engineering leader. AI tools builder.</h2>
+  <div class="about">
     <div>
-      <p class="eyebrow">Network automation · AI for NetOps</p>
-      <h1>The loop, closed.</h1>
-      <p class="lede">Georgi Gaydarov builds AI-native network operations tooling — labs that remediate, changes that never leave the wall, and a 70,000-command CLI that actually compares vendors.</p>
-      <div class="cta">
-        <a class="btn primary" href="#work">Browse the lab</a>
-        <a class="btn ghost" href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub profile</a>
-      </div>
+      <p>Twenty-plus years on multivendor networks — Juniper, Arista, Cisco, Palo Alto, Fortinet — spanning BGP/MPLS, SD-WAN, SASE, and Zero Trust. The last few years have been about putting that craft into agents that can see, decide, and (only then) change a fabric.</p>
+      <p>GESH Lab is the public documentation hub for those projects. Private work stays private. Everything here is documented and meant to be cloned.</p>
     </div>
-    <div class="fabric" aria-hidden="true">
-      <svg viewBox="0 0 400 264" preserveAspectRatio="xMidYMid meet">
-        <g stroke="#f4f4f5" stroke-opacity=".18" stroke-width="1" fill="none">
-          <line x1="140" y1="36" x2="48" y2="132"/><line x1="140" y1="36" x2="149" y2="132"/><line x1="140" y1="36" x2="251" y2="132"/><line x1="140" y1="36" x2="352" y2="132"/>
-          <line x1="260" y1="36" x2="48" y2="132"/><line x1="260" y1="36" x2="149" y2="132"/><line x1="260" y1="36" x2="251" y2="132"/><line x1="260" y1="36" x2="352" y2="132"/>
-          <line x1="48" y1="132" x2="100" y2="228"/><line x1="149" y1="132" x2="100" y2="228"/><line x1="149" y1="132" x2="200" y2="228"/>
-          <line x1="251" y1="132" x2="200" y2="228"/><line x1="251" y1="132" x2="300" y2="228"/><line x1="352" y1="132" x2="300" y2="228"/>
-        </g>
-        <circle cx="140" cy="36" r="5" fill="#f4f4f5"/><circle cx="260" cy="36" r="5" fill="#f4f4f5"/>
-        <circle cx="48" cy="132" r="4.2" fill="#c4c4cc"/><circle cx="149" cy="132" r="4.2" fill="#c4c4cc"/><circle cx="251" cy="132" r="4.2" fill="#c4c4cc"/><circle cx="352" cy="132" r="4.2" fill="#c4c4cc"/>
-        <circle cx="100" cy="228" r="3.4" fill="#8a8a93"/><circle cx="200" cy="228" r="3.4" fill="#8a8a93"/><circle cx="300" cy="228" r="3.4" fill="#8a8a93"/>
-      </svg>
-      <div class="cap"><span>Clos fabric</span><span>2 spine · 4 leaf</span></div>
-    </div>
-  </div>
-
-  <div class="stats wrap" style="max-width:none;padding:0;">
-    <div class="wrap" style="display:contents">
-      <div><b>20+</b><span>years on the wire</span></div>
-      <div><b>9</b><span>public labs & tools</span></div>
-      <div><b>70k+</b><span>CLI commands indexed</span></div>
-      <div><b>26</b><span>devices in the AI lab</span></div>
-      <div><b>17</b><span>vendors compared</span></div>
-    </div>
-  </div>
-
-  <section class="block wrap" id="work">
-    <div class="sec-h">
-      <div>
-        <h2>Work</h2>
-        <p class="sub">Nine public labs and tools. Docs first. Fail-closed by default.</p>
-      </div>
-      <input class="search" id="q" type="search" placeholder="Filter by name, vendor, or tag" aria-label="Filter projects">
-    </div>
-    <div class="filters" role="tablist" aria-label="Project domain">
-      <button type="button" data-domain="all" aria-pressed="true">All</button>
-      <button type="button" data-domain="closed-loop">Closed-loop</button>
-      <button type="button" data-domain="security">Security</button>
-      <button type="button" data-domain="reference">Reference</button>
-      <button type="button" data-domain="llm">LLM tooling</button>
-    </div>
-    <div class="grid three" id="grid">
-      <a class="card" data-domain="security" data-hay="argus agentic ai penetration tester guardrail hmac signer evidence graph active directory supervised v1" href="https://gesh75.github.io/argus/">
-        <span class="chip">Security</span>
-        <h3>argus</h3>
-        <p>Fail-closed defensive assessment orchestrator. Supervised V1 release candidate; experimental V2 with an out-of-band HMAC signer and operator-gated evidence graph. Isolated lab only — unattended mode stays locked.</p>
-        <div class="tags"><span class="tag">7-layer guardrail</span><span class="tag">OOB HMAC signer</span><span class="tag">supervised V1</span></div>
-      </a>
-      <a class="card" data-domain="security" data-hay="aegis air-gapped digital twin batfish pci soc2 nist ed25519 containerlab v0.2.0" href="https://gesh75.github.io/aegis/">
-        <span class="chip">Security</span>
-        <h3>aegis</h3>
-        <p>Air-gapped pre-deployment network change validation against a real containerlab digital twin. v0.2.0: 11 frameworks, bounded autonomy, detached Ed25519 seals. Zero egress.</p>
-        <div class="tags"><span class="tag">v0.2.0</span><span class="tag">Ed25519 seal</span><span class="tag">11 frameworks</span></div>
-      </a>
-      <a class="card" data-domain="closed-loop" data-hay="multivendor-ai-network-lab pydantic-ai 26 devices mcp juniper arista nokia frr remediation phase 6 portal" href="https://gesh75.github.io/multivendor-ai-network-lab/portal.html">
-        <span class="chip">Closed-loop</span>
-        <h3>multivendor-ai-network-lab</h3>
-        <p>26-device lab that closes the loop — anomalies auto-remediate, risk-gated, with RFC 6241 confirmed-commit rollback. Interactive Lab Ops portal, Pydantic-AI orchestrator, 69 MCP tools. Phase 6.</p>
-        <div class="tags"><span class="tag">26 devices</span><span class="tag">69 MCP tools</span><span class="tag">Phase 6</span></div>
-      </a>
-      <a class="card" data-domain="closed-loop" data-hay="napalm-live-lab arista nokia frr containerlab commands coverage" href="https://gesh75.github.io/napalm-live-lab/">
-        <span class="chip">Closed-loop</span>
-        <h3>napalm-live-lab</h3>
-        <p>Honest, live multivendor NAPALM coverage — Arista cEOS, Nokia SR Linux and FRR — plus a safe-by-default console of 2,361 curated commands.</p>
-        <div class="tags"><span class="tag">NAPALM</span><span class="tag">2,361 commands</span><span class="tag">read-only guard</span></div>
-      </a>
-      <a class="card" data-domain="closed-loop" data-hay="netlog-ai syslog junos eos frr sonic cumulus sanitize llm grok root-cause causal timeline mcp kibana splunk loki librenms 423 80 v0.6" href="https://gesh75.github.io/netlog-ai/">
-        <span class="chip">Closed-loop</span>
-        <h3>netlog-ai</h3>
-        <p>Sanitize-first AI log analyzer. Syslog in, ranked CLI playbooks out. 0.6 in flight: Grok backend, causal timeline, blast radius, 80 patterns, 423 tests. Local, Claude, or Grok — the model never sees a credential.</p>
-        <div class="tags"><span class="tag">0.6 in flight</span><span class="tag">423 tests</span><span class="tag">80 patterns</span><span class="tag">Grok</span></div>
-      </a>
-      <a class="card" data-domain="reference" data-hay="multivendor-cli-configurator 70000 cisco juniper arista nokia fortinet palo alto netconf ansible studio intent migrate recipes gnmi" href="https://gesh75.github.io/multivendor-cli-configurator/">
-        <span class="chip">Reference</span>
-        <h3>multivendor-cli-configurator</h3>
-        <p>70,000+ CLI commands across 17 vendors — searchable, concept-aligned N-vendor compare, NETCONF / Ansible drawers. CLI Studio adds intent, migrate, recipes, EOS/FRR/VyOS parsers, and a 10-node FRR lab map.</p>
-        <div class="tags"><span class="tag">70k commands</span><span class="tag">CLI Studio</span><span class="tag">zero-dep</span></div>
-      </a>
-      <a class="card" data-domain="reference" data-hay="network-observability-architecture netbox source of truth telemetry dual-signal alerts otlp alloy tempo gnmi freshness v2 console" href="https://gesh75.github.io/network-observability-architecture/">
-        <span class="chip">Reference</span>
-        <h3>network-observability-architecture</h3>
-        <p>v2.0 interactive console: OTLP/Alloy, Tempo, gNMI, freshness SLOs, dual-signal lab, and a read-only AI control plane. Discovery never writes NetBox.</p>
-        <div class="tags"><span class="tag">v2.0</span><span class="tag">OTLP</span><span class="tag">NetBox</span><span class="tag">dual-signal</span></div>
-      </a>
-      <a class="card" data-domain="llm" data-hay="claude-mastery-hub claude code mcp skills subagents hooks" href="https://gesh75.github.io/claude-mastery-hub/">
-        <span class="chip">LLM tooling</span>
-        <h3>claude-mastery-hub</h3>
-        <p>Interactive single-page guide to mastering Claude — the app, Claude Code, the API, MCP, skills, subagents, and hooks. Zero-dependency reference.</p>
-        <div class="tags"><span class="tag">Claude Code</span><span class="tag">MCP</span><span class="tag">skills</span></div>
-      </a>
-      <a class="card" data-domain="llm" data-hay="claude-skill-lint linter frontmatter progressive disclosure" href="https://github.com/gesh75/claude-skill-lint">
-        <span class="chip">LLM tooling</span>
-        <h3>claude-skill-lint</h3>
-        <p>Zero-dependency linter for Claude Code skills — frontmatter, description length, progressive disclosure, dead references, stale model IDs.</p>
-        <div class="tags"><span class="tag">linter</span><span class="tag">CLI</span><span class="tag">zero-dep</span></div>
-      </a>
-    </div>
-    <p class="empty" id="empty" hidden>No projects match that filter.</p>
-  </section>
-
-  <section class="block wrap" id="principles" style="border-top:1px solid var(--border)">
-    <h2>Principles</h2>
-    <p class="sub">How the lab is built — and why the agents do not get a blank check.</p>
-    <div class="principles" style="margin-top:2.5rem">
-      <article><div class="n">01</div><h3>Read-only by default</h3><p>Agents observe first. Writes are gated, confirmed, and reversible.</p></article>
-      <article><div class="n">02</div><h3>Sanitize before the model</h3><p>Raw syslog never meets an LLM. The model sees a problem, not a credential.</p></article>
-      <article><div class="n">03</div><h3>Fail closed</h3><p>A 7-layer guardrail. Risk gates of auto / approve / page-out. Unclear policy means nothing fires.</p></article>
-      <article><div class="n">04</div><h3>Evidence, not screenshots</h3><p>What leaves the wall is a sealed badge. HMAC-audited runs. Immutable GAIT.</p></article>
-      <article><div class="n">05</div><h3>Honest coverage</h3><p>Publish what actually works on Arista, Nokia SR Linux, and FRR — not a marketing matrix.</p></article>
-      <article><div class="n">06</div><h3>Human-approved change</h3><p>RFC 6241 confirmed-commit with rollback. Automation proposes; a person owns the blast radius.</p></article>
-    </div>
-  </section>
-
-  <section class="block wrap" id="stack" style="border-top:1px solid var(--border)">
-    <h2>Stack</h2>
-    <div class="stack" style="margin-top:2rem">
-      <div><h3>Vendors</h3><ul><li>Juniper</li><li>Arista</li><li>Cisco</li><li>Nokia</li><li>Palo Alto</li><li>Fortinet</li><li>FRR</li><li>VyOS</li><li>SONiC</li></ul></div>
-      <div><h3>Protocols</h3><ul><li>BGP</li><li>MPLS</li><li>EVPN</li><li>SD-WAN</li><li>SASE</li><li>Zero Trust</li><li>NETCONF</li></ul></div>
-      <div><h3>Automation</h3><ul><li>Python</li><li>Ansible</li><li>Nornir</li><li>NAPALM</li><li>containerlab</li><li>MCP</li></ul></div>
-      <div><h3>AI</h3><ul><li>Claude</li><li>Grok</li><li>Pydantic-AI</li><li>on-prem LLMs</li><li>Ollama</li><li>sanitize-first</li></ul></div>
-    </div>
-  </section>
-
-  <section class="block wrap" id="about" style="border-top:1px solid var(--border)">
-    <p class="eyebrow">About</p>
-    <h2 style="margin-top:.6rem;font-size:clamp(1.8rem,4vw,2.6rem)">Senior network engineering leader. AI tools builder.</h2>
-    <div class="about" style="margin-top:2rem">
-      <div>
-        <p>Twenty-plus years on multivendor networks — Juniper, Arista, Cisco, Palo Alto, Fortinet — spanning BGP/MPLS, SD-WAN, SASE, and Zero Trust. The last few years have been about putting that craft into agents that can see, decide, and (only then) change a fabric.</p>
-        <p>GESH Lab is the public documentation hub for those projects. Private work stays private. Everything here is documented and meant to be cloned.</p>
-      </div>
-      <aside class="aside">
-        <h3>Connect</h3>
-        <a href="https://github.com/gesh75" target="_blank" rel="noopener">github.com/gesh75</a>
-        <a href="https://www.linkedin.com/in/gesh75" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://x.com/gesh755" target="_blank" rel="noopener">x.com/gesh755</a>
-      </aside>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap foot">
-    <div>Georgi Gaydarov · Network automation · AI for NetOps</div>
-    <nav>
-      <a href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub</a>
+    <aside class="aside glass">
+      <h3>Connect</h3>
+      <a href="https://github.com/gesh75" target="_blank" rel="noopener">github.com/gesh75</a>
       <a href="https://www.linkedin.com/in/gesh75" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://x.com/gesh755" target="_blank" rel="noopener">X</a>
-    </nav>
+      <a href="https://x.com/gesh755" target="_blank" rel="noopener">x.com/gesh755</a>
+    </aside>
   </div>
+</section>
+</main>
+<footer class="site">
+  <div class="footer-inner">
+    <div><p class="footer-brand">GESH LAB</p><p class="footer-desc">Network automation · AI for NetOps. Public labs that close the loop and fail closed.</p></div>
+    <div><h4>Explore</h4><a href="#work">Work</a><a href="#architecture">Architecture</a><a href="#principles">Principles</a></div>
+    <div><h4>Connect</h4><a href="https://github.com/gesh75" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/gesh75" target="_blank" rel="noopener">LinkedIn</a><a href="https://x.com/gesh755" target="_blank" rel="noopener">X / @gesh755</a></div>
+  </div>
+  <p class="footer-note">Georgi Gaydarov · Network automation · AI for NetOps</p>
 </footer>
+<button type="button" class="to-top" id="toTop" aria-label="Back to top">↑</button>
 <script>
-(function () {
-  var domain = "all";
-  var q = document.getElementById("q");
-  var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
-  var empty = document.getElementById("empty");
-  var buttons = document.querySelectorAll(".filters button");
-  function apply() {
-    var query = (q.value || "").trim().toLowerCase();
-    var shown = 0;
-    cards.forEach(function (c) {
-      var ok = domain === "all" || c.getAttribute("data-domain") === domain;
-      if (ok && query) ok = (c.getAttribute("data-hay") || "").indexOf(query) !== -1;
-      c.hidden = !ok;
-      if (ok) shown++;
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var domain='all';
+  var q=document.getElementById('q');
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  var empty=document.getElementById('empty');
+  var buttons=document.querySelectorAll('.filters button');
+  function apply(){
+    var query=(q.value||'').trim().toLowerCase(), shown=0;
+    cards.forEach(function(c){
+      var ok=domain==='all'||c.getAttribute('data-domain')===domain;
+      if(ok&&query) ok=(c.getAttribute('data-hay')||'').indexOf(query)!==-1;
+      c.hidden=!ok; if(ok) shown++;
     });
-    empty.hidden = shown !== 0;
+    empty.hidden=shown!==0;
   }
-  buttons.forEach(function (b) {
-    b.addEventListener("click", function () {
-      domain = b.getAttribute("data-domain");
-      buttons.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
-      apply();
-    });
-  });
-  q.addEventListener("input", apply);
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "/" && e.target !== q && e.target.tagName !== "INPUT") {
-      e.preventDefault();
-      q.focus();
-    }
-  });
+  buttons.forEach(function(b){ b.addEventListener('click',function(){ domain=b.getAttribute('data-domain'); buttons.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')}); apply(); }); });
+  q.addEventListener('input',apply);
+  document.addEventListener('keydown',function(e){ if(e.key==='/'&&e.target!==q&&e.target.tagName!=='INPUT'){e.preventDefault();q.focus();} });
+  var progress=document.getElementById('progress'), toTop=document.getElementById('toTop');
+  function onScroll(){ var h=document.documentElement, max=h.scrollHeight-h.clientHeight; progress.style.transform='scaleX('+(max>0?h.scrollTop/max:0)+')'; toTop.classList.toggle('show',h.scrollTop>600); }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  toTop.addEventListener('click',function(){ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); });
+  var menuToggle=document.getElementById('menuToggle'), navLinks=document.getElementById('navLinks');
+  menuToggle.addEventListener('click',function(){ var open=navLinks.classList.toggle('open'); menuToggle.setAttribute('aria-expanded',String(open)); });
+  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ navLinks.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); }); });
+  if(reduce) document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')});
+  else {
+    var io=new IntersectionObserver(function(entries){ entries.forEach(function(entry){ if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); } }); },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  }
+  function animateCount(el){
+    var target=parseInt(el.dataset.count,10), suffix=el.dataset.suffix||'';
+    if(reduce||target===0){ el.textContent=target.toLocaleString()+suffix; return; }
+    var dur=1300, start=performance.now();
+    function tick(now){ var t=Math.min(1,(now-start)/dur), eased=1-Math.pow(1-t,3); el.textContent=Math.round(target*eased).toLocaleString()+suffix; if(t<1) requestAnimationFrame(tick); else el.textContent=target.toLocaleString()+suffix; }
+    requestAnimationFrame(tick);
+  }
+  var statIO=new IntersectionObserver(function(entries){ entries.forEach(function(entry){ if(entry.isIntersecting){ animateCount(entry.target); statIO.unobserve(entry.target); } }); },{threshold:0.5});
+  document.querySelectorAll('.stat-chip .num').forEach(function(el){statIO.observe(el)});
+  onScroll();
 })();
 </script>
 </body>
