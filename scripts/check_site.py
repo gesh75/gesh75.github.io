@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
-"""Validate the hub page: HTML structure (offline) + link liveness (network).
+"""Validate a Pages HTML file: structure (offline) + local assets + link liveness.
 
-Two checks:
-  1. index.html parses with balanced, properly-nested tags. Pure offline, a
-     hard gate — a malformed page fails CI.
-  2. Every external http(s) link in index.html resolves. A 404/410 is a hard
-     failure (this is the case we care about: a project card pointing at a
-     renamed or deleted repo / a taken-down Pages site). Transient problems
-     (timeouts, 403, 5xx, rate limits) are warnings, not failures, so flaky
-     networks or bot-hostile hosts don't turn CI red.
+Three checks:
+  1. The file parses with balanced tags. Pure offline, a hard gate.
+  2. Relative href/src targets exist on disk (also offline).
+  3. Every external http(s) link resolves. A 404/410 is a hard failure
+     (a card pointing at a renamed repo / taken-down Pages site). Transient
+     problems (timeouts, 403, 5xx, rate limits) are warnings, not failures.
 
-LinkedIn is skipped outright — it serves 999/403 to automated clients and would
-only ever produce noise.
+LinkedIn is skipped outright — it serves 999/403 to automated clients.
 
 Stdlib only. `python3 scripts/check_site.py [path-to-html]` (defaults to index.html).
-Exit 0 = ok, 1 = structural error or a dead (404/410) link, 2 = usage/IO error.
+CI should invoke this once per published HTML file.
+Exit 0 = ok, 1 = structural / missing-asset / dead-link error, 2 = usage/IO error.
 """
 from __future__ import annotations
 
@@ -67,6 +65,23 @@ def check_structure(html: str) -> list[str]:
     return errors
 
 
+_LOCAL_REF = re.compile(r'(?:href|src)="(?!https?://|//|#|mailto:|data:)([^"]+)"')
+
+
+def check_local_assets(html: str, page: Path) -> list[str]:
+    """Fail if a relative href/src does not exist next to the page."""
+    errors: list[str] = []
+    root = page.resolve().parent
+    for raw in _LOCAL_REF.findall(html):
+        rel = raw.split("#", 1)[0].split("?", 1)[0]
+        if not rel:
+            continue
+        target = (root / rel).resolve()
+        if not target.exists():
+            errors.append(f"missing local asset: {raw}")
+    return errors
+
+
 def link_status(url: str) -> tuple[str, int | None, str]:
     """Return (verdict, http_status, detail). verdict in dead|ok|warn."""
     for method in ("HEAD", "GET"):
@@ -90,7 +105,7 @@ def main() -> int:
     if not path.exists():
         print(f"ERROR: {path} not found", file=sys.stderr)
         return 2
-    html = path.read_text()
+    html = path.read_text(encoding="utf-8")
 
     print(f"Checking {path}\n")
     struct_errors = check_structure(html)
@@ -101,6 +116,15 @@ def main() -> int:
         print()
     else:
         print("HTML structure: OK (tags balanced)\n")
+
+    asset_errors = check_local_assets(html, path)
+    if asset_errors:
+        print("LOCAL ASSET ERRORS:")
+        for e in asset_errors:
+            print(f"  ✗ {e}")
+        print()
+    else:
+        print("Local assets: OK\n")
 
     links = sorted(set(re.findall(r'(?:href|src)="(https?://[^"]+)"', html)))
     dead: list[str] = []
@@ -119,16 +143,18 @@ def main() -> int:
             print(f"  ⚠ warn  {url}  ({detail})")
 
     print()
-    if struct_errors or dead:
+    if struct_errors or asset_errors or dead:
         print("FAIL:", end=" ")
         parts = []
         if struct_errors:
             parts.append(f"{len(struct_errors)} HTML structure error(s)")
+        if asset_errors:
+            parts.append(f"{len(asset_errors)} missing local asset(s)")
         if dead:
             parts.append(f"{len(dead)} dead link(s)")
         print(", ".join(parts))
         return 1
-    print("OK — page is well-formed and no dead links.")
+    print("OK — page is well-formed, local assets exist, and no dead links.")
     return 0
 
 
