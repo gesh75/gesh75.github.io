@@ -20,4 +20,4 @@ Command-center visual language shared with [Aegis](https://gesh75.github.io/aegi
 | [claude-mastery-hub](https://github.com/gesh75/claude-mastery-hub) | Interactive single-page guide to mastering Claude — app, Claude Code, API, MCP, skills, subagents, hooks |
 | [claude-skill-lint](https://github.com/gesh75/claude-skill-lint) | v0.5.0 linter — 2026 models, computer-use safety, NetOps pack. Live page: https://gesh75.github.io/claude-skill-lint/ |
 
-Zero-dependency single HTML. `python3 scripts/check_site.py` still gates structure and link liveness in CI.
+Zero-dependency HTML. `python3 scripts/check_site.py` gates structure and link liveness for every `*.html` page in CI. Offline checker tests: `python3 -m unittest discover -s tests -v`.

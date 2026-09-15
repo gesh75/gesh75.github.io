@@ -22,5 +22,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - name: Check index.html structure and link liveness
+      - name: Unit-test site checker (offline)
+        run: python3 -m unittest discover -s tests -v
+      - name: Check all HTML structure and link liveness
         run: python3 scripts/check_site.py

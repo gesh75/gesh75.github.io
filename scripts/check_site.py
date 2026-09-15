@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Validate the hub page: HTML structure (offline) + link liveness (network).
+"""Validate HTML pages: structure (offline) + link liveness (network).
 
-Two checks:
-  1. index.html parses with balanced, properly-nested tags. Pure offline, a
+Two checks per page:
+  1. The file parses with balanced, properly-nested tags. Pure offline, a
      hard gate — a malformed page fails CI.
-  2. Every external http(s) link in index.html resolves. A 404/410 is a hard
-     failure (this is the case we care about: a project card pointing at a
+  2. Every external http(s) link resolves. A 404/410 is a hard failure
+     (this is the case we care about: a project card pointing at a
      renamed or deleted repo / a taken-down Pages site). Transient problems
      (timeouts, 403, 5xx, rate limits) are warnings, not failures, so flaky
      networks or bot-hostile hosts don't turn CI red.
@@ -13,8 +13,9 @@ Two checks:
 LinkedIn is skipped outright — it serves 999/403 to automated clients and would
 only ever produce noise.
 
-Stdlib only. `python3 scripts/check_site.py [path-to-html]` (defaults to index.html).
-Exit 0 = ok, 1 = structural error or a dead (404/410) link, 2 = usage/IO error.
+Stdlib only. `python3 scripts/check_site.py [html …]` defaults to every `*.html`
+under the current directory (skips `.git`). Exit 0 = ok, 1 = structural error
+or a dead (404/410) link, 2 = usage/IO error.
 """
 from __future__ import annotations
 
@@ -85,8 +86,13 @@ def link_status(url: str) -> tuple[str, int | None, str]:
     return "warn", None, "HEAD/GET both refused"
 
 
-def main() -> int:
-    path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("index.html")
+def html_paths(argv: list[str]) -> list[Path]:
+    if argv:
+        return [Path(p) for p in argv]
+    return sorted(p for p in Path(".").rglob("*.html") if ".git" not in p.parts)
+
+
+def check_page(path: Path) -> int:
     if not path.exists():
         print(f"ERROR: {path} not found", file=sys.stderr)
         return 2
@@ -130,6 +136,24 @@ def main() -> int:
         return 1
     print("OK — page is well-formed and no dead links.")
     return 0
+
+
+def main() -> int:
+    paths = html_paths(sys.argv[1:])
+    if not paths:
+        print("ERROR: no HTML files found", file=sys.stderr)
+        return 2
+    worst = 0
+    for i, path in enumerate(paths):
+        if i:
+            print()
+        code = check_page(path)
+        if code > worst:
+            worst = code
+    if len(paths) > 1:
+        print()
+        print(f"{'FAIL' if worst else 'OK'} — {len(paths)} HTML page(s) checked.")
+    return worst
 
 
 if __name__ == "__main__":
