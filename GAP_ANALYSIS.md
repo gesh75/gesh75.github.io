@@ -1,66 +1,93 @@
 # Gap analysis — gesh75.github.io
 
-Ranked scan of this docs/Pages hub. Method: read every file, run `scripts/check_site.py`, `curl -sI` live URLs, and compare hub copy to CI coverage. No product features invented.
+> Merge note (2026-09-20): `origin/main` was merged into this Cursor gap-scan
+> branch. Unique scan/fix work from the PR is kept. Do not drop later main
+> changes in other files.
 
-## P0
 
-### P0-1 — Personal portfolio HTML was a live Pages URL
+Docs/Pages hub. No application backend. Ranked by blast radius, not ambition.
 
-- **Area:** security
-- **File:** `gesh-book-2026-08-23/index.html` (removed in this PR)
+Scan date: 2026-09-05. Evidence gathered by reading the tree, running `python3 scripts/check_site.py`, and `curl -sI` against the live Pages host.
+
+## P0 — fix now
+
+### 1. Public financial book on the documentation hub (security)
+
+- **Path:** `gesh-book-2026-08-23/index.html` (removed in this PR)
 - **Evidence:**
-  - `curl -sI https://gesh75.github.io/gesh-book-2026-08-23/` → **HTTP 200** (GitHub Pages, 2026-09-05).
-  - Page title: “GESH Financial — Daily Report 2026-08-23”. Body lists **$19,521** portfolio total, 15 tickers with **share counts** (e.g. `1.113 sh` AMGN, `7.229 sh` GOOG, `2.594 sh` LLY).
-  - Commit `fa45cfd` called it “share-by-link” + `noindex`. `noindex` does not hide a public user-Pages path or a file in a public git tree.
-  - Hub copy says “Private work stays private.” `.claude/memories/omega.md` says trading/finance is deliberately excluded. CI never opened this file (see P0-2).
-- **Fix shipped:** delete the page. Git history still has it (history rewrite out of scope).
+  - Live URL returned **HTTP 200** on 2026-09-05: `https://gesh75.github.io/gesh-book-2026-08-23/`
+  - Page title: “GESH Financial — Daily Report 2026-08-23”
+  - Body listed **15 holdings** with share counts, dollar equity, and a **$19,521** portfolio total (e.g. “1.113 sh · avg $439.33”, “LLY at 16.7%”)
+  - Banner text: “FRIEND BOOK — isolated run”
+  - `noindex,nofollow` only hides search; the URL stayed world-readable
+  - Not linked from `index.html` or `README.md`
+  - `.claude/memories/omega.md` line 74: “Private repos (trading/finance, …) are **deliberately excluded** from the hub”
+- **Why P0:** personal / friend portfolio data on a public Pages site. `noindex` is not access control.
+- **Fix shipped:** delete the directory. Git history still contains the file (history rewrite is out of scope).
 
-### P0-2 — CI only gated `index.html`
+### 2. CI only gated `index.html` — sibling Pages were unchecked (CI / missing test)
 
-- **Area:** CI
-- **Files:** `.github/workflows/ci.yml`, `scripts/check_site.py` (old default `Path("index.html")`)
+- **Path:** `.github/workflows/ci.yml` (was line 26: `python3 scripts/check_site.py`)
 - **Evidence:**
-  - Workflow ran `python3 scripts/check_site.py` with no args; the script defaulted to **only** `index.html`.
-  - `claude-skill-lint/index.html` is a live public page (`https://gesh75.github.io/claude-skill-lint/` → 200) with **30** external links. Those links were never a CI hard gate.
-  - Manual run on that page (this scan) passed — the hole is **missing coverage**, not a current 404.
-- **Fix shipped:** default to every `*.html`; add offline unit tests; CI runs both.
+  - `scripts/check_site.py` defaults to `index.html` when given no path
+  - CI invoked the script with no path, so `claude-skill-lint/index.html` and the financial book were never structure- or link-checked
+  - No `test_*.py` existed — the only gate had no offline unit tests
+  - Proved by running the checker against `claude-skill-lint/index.html` (30 external links, previously invisible to CI)
+- **Why P0:** a broken project page or a leaked extra HTML file cannot fail the weekly cron.
+- **Fix shipped:** unittest for structure + local assets; CI `find`s every `*.html`.
 
-## P1
+## P1 — next small jobs
 
-| ID | Area | Gap | Evidence |
-|---|---|---|---|
-| P1-1 | docs / DX | Stale agent memory will “correct” live facts | `.claude/memories/omega.md`: “8 public projects”, “claude-skill-lint has **no Pages site**”, AI lab **68** MCP tools, netlog-ai **139 tests**. Hub today: 9 labs, live skill-lint page, 69 MCP, 423 tests (`index.html`, `README.md`). |
-| P1-2 | DX | No branded 404 | `curl -sI https://gesh75.github.io/this-does-not-exist-gap-scan` → 404, GitHub default page (`content-security-policy: default-src 'none'`). No `404.html` in repo. |
-| P1-3 | docs / CI | Checker ignores relative links and `README.md` | `scripts/check_site.py` regex is `(?:href\|src)="(https?://[^"]+)"`. `favicon.svg` and README table URLs are not gated. |
-| P1-4 | security | Finance page remains in git history | `git log -- gesh-book-2026-08-23/` still shows `fa45cfd`. Deletion stops Pages after the next `main` deploy; clones of old SHAs still have holdings. |
-| P1-5 | CI | `scripts/check_site.py` itself is published | `curl -sI https://gesh75.github.io/scripts/check_site.py` → **200**. Low risk (stdlib), but the site has no allow-list of publishable paths. |
+### 3. Hub “90+ checks” contradicted the project page’s “89”
 
-## P2
+- **Path:** `index.html` (claude-skill-lint card); `claude-skill-lint/index.html` (meta / og + `<b>89</b>`)
+- **Evidence:** hub card and both meta descriptions said “90+ checks”; the same project page’s stats row and “Checks” section say **89** rules. 89 is not 90+.
+- **Fix shipped:** copy aligned to 89 (the page’s own count).
 
-| ID | Area | Gap | Evidence |
-|---|---|---|---|
-| P2-1 | correctness | “90+ checks” vs “89” | Hub card `index.html` + skill-lint meta: “90+ checks”. Same page hero: `<b>89</b> lint checks` and “89 rules”. |
-| P2-2 | docs | System-context SVG omits skill-lint as its own node | `index.html` architecture map has 8 lab nodes; Claude hub text is “skills · lint”. Nine cards exist. |
-| P2-3 | DX | Missing site chrome | No `robots.txt` (live 404), no `sitemap.xml`, no `.gitignore`, no `CODEOWNERS`, no `SECURITY.md`, no `og:image`. |
-| P2-4 | correctness | Tag balancer accepts crossed nesting | `check_structure("<div><span></div></span>")` returns `[]` because `handle_endtag` pops back to the matching name. Documented, not “fixed” (would be a parser rewrite). |
-| P2-5 | CI | Actions unpinned | `.github/workflows/ci.yml` uses `actions/checkout@v4` and `actions/setup-python@v5` (moving tags). Stdlib site; upgrade skipped unless broken. |
-| P2-6 | DX | No `.nojekyll` | User Pages defaults to Jekyll. Site works today; a later `_assets/` folder would silently not publish. |
+### 4. Architecture map says “nine labs” but draws eight project nodes
 
-## Dead / leftover
+- **Path:** `index.html` (~line 277, “System context”)
+- **Evidence:** hero / work heading say “Nine public labs”; `#grid` has 9 `.card` elements; the context SVG has 8 project `<a href="https://gesh75.github.io/…">` nodes and **no `claude-skill-lint` node** (`skill-lint in architecture svg` → false).
+- **Skip this PR:** SVG layout rewrite is not a small safe edit.
 
-- **`gesh-book-2026-08-23/`** — leftover finance snapshot on a NetOps hub. Deleted.
-- **`.claude/memories/omega.md`** — leftover session notes, factually wrong. Left in place (not one of the three code fixes). Safe to delete in a follow-up.
+### 5. README claimed “single HTML”
 
-## What this PR changed (3 fixes, no more)
+- **Path:** `README.md` last line (pre-fix)
+- **Evidence:** tree also had `claude-skill-lint/index.html` and the financial book. Checker docs only mentioned `index.html`.
+- **Fix shipped:** README now matches the two published pages and the all-HTML CI gate.
 
-1. Delete `gesh-book-2026-08-23/`.
-2. `check_site.py` + CI walk every HTML page.
-3. Offline `tests/test_check_site.py` (structure, path discovery, LinkedIn skip).
+### 6. Session memory is stale (docs / DX)
 
-## Skipped
+- **Path:** `.claude/memories/omega.md`
+- **Evidence:** still says “8 public projects”, “claude-skill-lint has **no Pages site**”, “68 MCP tools”, “netlog-ai **139 tests**”. Hub today: 9 cards, live `/claude-skill-lint/`, 69 MCP, 423 tests.
+- **Skip this PR:** internal memory, not user-facing. Refresh in a dedicated docs pass.
 
-Large rewrites, dependency upgrades, new 404/robots chrome, history rewrite, pinning Actions by SHA, inventing backend features, syncing project stats across other repos.
+## P2 — backlog, do not boil
+
+| Gap | Path / evidence | Why not now |
+|---|---|---|
+| No `404.html` / `robots.txt` / `sitemap.xml` | missing from repo root | GitHub Pages defaults are fine; book is gone |
+| No `.gitignore` | `ls` at repo root | Nothing to ignore yet |
+| `TagBalance` accepts mis-nested tags | `scripts/check_site.py` `handle_endtag` pops from the match downward | Would need fixture-heavy parser work |
+| No `og:image` | `index.html` head | Cosmetic |
+| Google Fonts without `preconnect` / SRI | `index.html` line 16 | Perf only; SRI on Google CSS is brittle |
+| Filter `role="tablist"` without tab panels | `index.html` `.filters` | A11y polish |
+| No `SECURITY.md` / `CODEOWNERS` | missing | Empty ceremony on a static hub |
+| Checker does not assert card count == “Nine” | `scripts/check_site.py` | Easy follow-up; see next job |
+| Financial book remains in git history | `git log -- gesh-book-2026-08-23/` | History rewrite is out of scope |
+
+## What this PR proved
+
+- `python3 scripts/check_site.py` on `index.html`: structure OK, 13 external links, 0 dead (LinkedIn skipped).
+- Same checker on `claude-skill-lint/index.html`: structure OK, 30 external links, 0 dead.
+- Live `GET` of `/gesh-book-2026-08-23/` was **200** before deletion.
+- Hub card count is 9; context SVG project nodes are 8.
+- No secrets / API keys in the remaining tree (grep for key/token patterns only hit HMAC/docs copy).
+
+## What we skipped
+
+Large SVG redesign, dependency upgrades, CSP/Pages headers, git-filter-repo of the book, new product features, rewriting `.claude/memories/omega.md`, inventing a backend.
 
 ## Next recommended agent job
 
-Delete or rewrite `.claude/memories/omega.md` so agents stop treating the July 2026 hub snapshot as source of truth, then add a one-file `404.html` that links back to the nine lab cards.
+Add a `claude-skill-lint` node to the system-context SVG and a one-line assertion in `scripts/check_site.py` that `.card` count equals the “Nine” copy so the map and headline cannot drift again.
