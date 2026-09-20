@@ -1,5 +1,10 @@
 # Gap analysis — gesh75.github.io
 
+> Merge note (2026-09-20): `origin/main` was merged into this Cursor gap-scan
+> branch. Unique scan/fix work from the PR is kept. Do not drop later main
+> changes in other files.
+
+
 Docs/Pages hub. No application backend. Ranked by blast radius, not ambition.
 
 Scan date: 2026-09-05. Evidence gathered by reading the tree, running `python3 scripts/check_site.py`, and `curl -sI` against the live Pages host.
