@@ -34,6 +34,21 @@ class StructureTests(unittest.TestCase):
         self.assertEqual(check_site.check_structure(html), [])
 
 
+class HubHuggingFaceTests(unittest.TestCase):
+    def test_profile_and_live_demo_links(self) -> None:
+        html = (ROOT.parent / "index.html").read_text(encoding="utf-8")
+        expected = (
+            "https://huggingface.co/gesh75",
+            "https://huggingface.co/spaces/gesh75/multivendor-cli-configurator",
+            "https://huggingface.co/spaces/gesh75/netlog-ai",
+            "https://huggingface.co/datasets/gesh75/multivendor-cli-commands",
+        )
+        for url in expected:
+            with self.subTest(url=url):
+                self.assertIn(url, html)
+        self.assertGreaterEqual(html.count("Live demo on Hugging Face"), 3)
+
+
 class LocalAssetTests(unittest.TestCase):
     def test_missing_relative_href(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
